@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Inicio de Sesión";
+}
+
+<div class="container mt-4" style="max-width: 500px;">
+    <h2>Iniciar sesión</h2>
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form action="@Url.Action("InicioSesion", "Home")" method="post">
+        <div class="mb-3">
+            <label for="Usuario" class="form-label">Usuario</label>
+            <input id="Usuario" name="Usuario" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Contraseña" class="form-label">Clave</label>
+            <input id="Contraseña" name="Contraseña" type="password" class="form-control" />
+        </div>
+
+        <input type="submit" class="btn btn-primary" value="Ingresar" />
+    </form>
+</div>

@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<div class="container mt-4">
+    <h2>Registro de usuario</h2>
+
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+    {
+        <div class="alert alert-success">@ViewBag.Message</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(ViewBag.Error))
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <form action="@Url.Action("Registro", "Home")" method="post">
+
+        <div class="mb-3">
+            <label for="Nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="Nombre" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" name="Apellido" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="Email" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Telefono" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" name="Telefono" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Usuario" class="form-label">Usuario</label>
+            <input type="text" class="form-control" name="Usuario" />
+        </div>
+
+        <div class="mb-3">
+            <label for="Contraseña" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="Contraseña" />
+        </div>
+
+
+        <input type="submit" class="btn btn-primary" value="Registrar" />
+    </form>
+</div>
+        
