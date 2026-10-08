@@ -6,16 +6,27 @@ public class BD
     private string conexion = @"Server=localhost;DataBase=TP05; Integrated Security=True; TrustServerCertificate=True;";
     public void agregarUsuario (Usuario u)
     {
+<<<<<<< HEAD
         string query = "INSERT INTO Usuarios (Nombre,Apellido,Contraseña,Id) VALUES (@Nombre,@Apellido,@Contraseña,@Id)";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
             connection.Execute(query, new {nombre = u.Nombre, apellido = u.Apellido, clave = u.Contraseña, tipo = u.Id});
+=======
+        string query = "INSERT INTO Usuarios (Nombre,Apellido,NombreUsuario,Contraseña,Id,Email,Telefono,FotoPerfil) VALUES (@Nombre,@Apellido,@NombreUsuario,@Contraseña,@Id,@Email,@Telefono,@FotoPerfil)";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            connection.Execute(query, new { Nombre = u.Nombre, Apellido = u.Apellido, NombreUsuario = u.Usuario, Contraseña = u.Contraseña, Id = u.Id, Email = u.Email, Telefono = u.Telefono, FotoPerfil = u.FotoPerfil });
+>>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
         }
     }
 
     public Usuario encontrarUsuario(string Email, string Contraseña)
     {
+<<<<<<< HEAD
+        string query = "SELECT Id as Id, Nombre as Nombre, Apellido as Apellido, NombreUsuario as Usuario, Contraseña as Contraseña, Email as Email, Telefono as Telefono, FotoPerfil as FotoPerfil FROM Usuarios WHERE NombreUsuario = @NombreUsuario AND Contraseña = @Contraseña";
+=======
         string query = "SELECT id, nombre, apellido, usuario, clave, tipo FROM Usuarios WHERE Email = @Email AND Contraseña = @Contraseña";
+>>>>>>> 2b324eade225909f5127bd912b87759dfecc2655
         using (SqlConnection connection = new SqlConnection(conexion))
         {
             return connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email, Contraseña = Contraseña });
@@ -24,7 +35,11 @@ public class BD
 
     public Usuario buscarPorNombreUsuario(string Email)
     {
+<<<<<<< HEAD
         string query = "SELECT Nombre, apellido, Email, Contraseña, Id FROM Usuarios WHERE Email = @Email";
+=======
+        string query = "SELECT Id as Id, Nombre as Nombre, Apellido as Apellido, NombreUsuario as Usuario, Contraseña as Contraseña, Email as Email, Telefono as Telefono, FotoPerfil as FotoPerfil FROM Usuarios WHERE NombreUsuario = @NombreUsuario";
+>>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
         using (SqlConnection connection = new SqlConnection(conexion))
         {
             return connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email });

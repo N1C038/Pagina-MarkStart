@@ -30,6 +30,7 @@ body {
   text-align: start;
 }
 
+<<<<<<< HEAD
 /* ========================================================= */
 /* MARKSTART HOME */
 /* ========================================================= */
@@ -264,3 +265,45 @@ body {
         padding: 18px 20px 22px;
     }
 }
+=======
+/* Header / Registro styles */
+.page-header {
+  background: #bfe7ef;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.page-header .header-inner {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.page-header .brand {
+  font-weight: 600;
+  color: #1f2d33;
+  text-decoration: none;
+}
+.page-header .header-nav {
+  display: none;
+  gap: 20px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .page-header .header-nav { display: flex; }
+}
+.page-header .header-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.user-block { display:flex; align-items:center; gap:10px; }
+.user-avatar {
+  width:56px; height:56px; border-radius:50%; object-fit:cover; display:block;
+}
+.user-avatar--placeholder { background:#6c757d; width:56px; height:56px; border-radius:50%; }
+.user-name { font-size:13px; font-weight:600; text-align:center; }
+.btn-login { background:#000; color:#fff; border-radius:4px; padding:8px 12px; }
+
+/* Form container spacing */
+.registro-container { margin-top: 24px; }
+>>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
