@@ -6,11 +6,10 @@ public class BD
     private string conexion = @"Server=localhost;DataBase=TP05; Integrated Security=True; TrustServerCertificate=True;";
     public void agregarUsuario (Usuario u)
     {
-        Console.WriteLine(u.NombreUsuario);
-        string query = "INSERT INTO Usuarios (Nombre,Apellido,NombreUsuario,Contraseña,Id) VALUES (@Nombre,@Apellido,@NombreUsuario,@Contraseña,@Id)";
+        string query = "INSERT INTO Usuarios (Nombre,Apellido,Contraseña,Id) VALUES (@Nombre,@Apellido,@Contraseña,@Id)";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            connection.Execute(query, new {nombre = u.Nombre, apellido = u.Apellido, usuario = u.NombreUsuario, clave = u.Contraseña, tipo = u.Id});
+            connection.Execute(query, new {nombre = u.Nombre, apellido = u.Apellido, clave = u.Contraseña, tipo = u.Id});
         }
     }
 
@@ -23,17 +22,16 @@ public class BD
         }
     }
 
-    public Usuario buscarPorNombreUsuario(string NombreUsuario)
+    public Usuario buscarPorNombreUsuario(string Email)
     {
-        string query = "SELECT Nombre, apellido, NombreUsuario, Contraseña, Id FROM Usuarios WHERE NombreUsuario = @NombreUsuario";
+        string query = "SELECT Nombre, apellido, Email, Contraseña, Id FROM Usuarios WHERE Email = @Email";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            return connection.QueryFirstOrDefault<Usuario>(query, new { NombreUsuario = NombreUsuario });
+            return connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email });
         }
     }
-<<<<<<< HEAD
     public Dictionary<Curso, Tarea> buscarCursosYTareasUsuario(int IdUsuario){
-        
+        Dictionary<Curso, Tarea> cursosYTareas = new Dictionary<Curso, Tarea>();
         string query = @"SELECT c.IdCurso, c.Nombre AS NombreCurso, c.Descripcion, c.Precio, c.CantTareas, c.FotoCurso, 
                                t.Id AS IdTarea, t.Nombre AS NombreTarea, t.Explicacion, t.ImagenTip, t.Tip 
                         FROM Usuarios u 
@@ -50,14 +48,14 @@ public class BD
                 new { IdUsuario = IdUsuario },
                 splitOn: "IdTarea");
 
-            Dictionary<Curso, Tarea> cursosYTareas = new Dictionary<Curso, Tarea>();
+           
             foreach (var item in result)
             {
                 cursosYTareas.Add(item.curso, item.tarea);
             }
         }
         return cursosYTareas;
-=======
+    }
     public List<Curso> obtenerCursos()
     {
         string query = "SELECT Nombre, Descripcion, Id, Precio, CantidadTareas, FotoCurso FROM Cursos";
@@ -65,5 +63,5 @@ public class BD
         {
             return connection.Query<Curso>(query).ToList();
         }
->>>>>>> d83cfeb524a1f9397366260a755d7eb9ee4dba86
     }
+}

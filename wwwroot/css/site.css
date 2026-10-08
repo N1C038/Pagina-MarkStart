@@ -29,3 +29,238 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* ========================================================= */
+/* MARKSTART HOME */
+/* ========================================================= */
+
+:root {
+    --markstart-blue-light: #97CFDD;
+    --markstart-blue-dark: #2E92AB;
+    --markstart-bg: #f3f3f3;
+    --markstart-text: #111111;
+    --markstart-line: rgba(46, 146, 171, 0.95);
+}
+
+body {
+    background: var(--markstart-bg);
+    color: var(--markstart-text);
+}
+
+.markstart-user,
+.markstart-guest {
+    width: min(1400px, calc(100% - 60px));
+    margin: 0 auto;
+    padding: 10px 0 32px;
+}
+
+.markstart-user__title,
+.markstart-guest__title {
+    margin: 0;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    color: var(--markstart-text);
+}
+
+.markstart-user__title {
+    font-size: clamp(3rem, 3.5vw + 1.8rem, 6rem);
+}
+
+.markstart-user__subtitle,
+.markstart-guest__subtitle {
+    margin: 10px 0 18px;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--markstart-text);
+}
+
+.markstart-user__subtitle {
+    font-size: clamp(2.2rem, 2vw + 1.1rem, 4rem);
+}
+
+.markstart-guest__title {
+    font-size: clamp(3.2rem, 3.8vw + 1.8rem, 6.1rem);
+}
+
+.markstart-guest__subtitle {
+    font-size: clamp(2.2rem, 2vw + 1.2rem, 4rem);
+}
+
+.markstart-guest__cta {
+    text-align: center;
+    margin: 18px 0 34px;
+}
+
+.markstart-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 170px;
+    min-height: 54px;
+    padding: 12px 26px;
+    background: var(--markstart-blue-dark);
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    border: none;
+    text-decoration: none;
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.markstart-btn:hover {
+    color: #ffffff;
+    text-decoration: none;
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+}
+
+.markstart-btn--primary {
+    min-width: 170px;
+    min-height: 52px;
+    font-size: 1.15rem;
+}
+
+.markstart-feature {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    background: var(--markstart-blue-light);
+    border: 2px solid var(--markstart-line);
+    min-height: 330px;
+    margin: 0 auto 34px;
+}
+
+.markstart-feature--reverse {
+    grid-template-columns: 0.85fr 1.15fr;
+}
+
+.markstart-feature__image {
+    position: relative;
+    width: 100%;
+    min-height: 230px;
+    background: rgba(255,255,255,0.18);
+    border: 2px solid var(--markstart-line);
+    box-sizing: border-box;
+    background-image:
+        linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,0.15) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.15) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.15) 75%);
+    background-size: 22px 22px;
+    background-position: 0 0, 0 11px, 11px -11px, -11px 0px;
+}
+
+.markstart-feature__image--left {
+    margin: 12px 0 12px 12px;
+    min-height: 250px;
+}
+
+.markstart-feature__image--right {
+    margin: 12px 12px 12px 0;
+    min-height: 250px;
+}
+
+.markstart-feature__copy {
+    padding: 24px 34px 24px 34px;
+    text-align: left;
+}
+
+.markstart-feature__copy h3 {
+    margin: 0 0 18px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.1rem, 1.8vw + 1rem, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--markstart-text);
+}
+
+.markstart-feature__copy p {
+    margin: 0 0 22px;
+    font-size: clamp(1.05rem, 0.7vw + 0.9rem, 1.7rem);
+    line-height: 1.5;
+    color: var(--markstart-text);
+}
+
+.markstart-feature__copy .markstart-btn {
+    margin-top: 8px;
+}
+
+.markstart-card {
+    background: var(--markstart-blue-light);
+    border: 2px solid var(--markstart-line);
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.markstart-card__title {
+    margin: 0;
+    padding: 14px 18px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--markstart-text);
+}
+
+.markstart-card__body {
+    padding: 22px 18px 20px;
+}
+
+.markstart-card__body h6 {
+    margin: 0 0 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--markstart-text);
+}
+
+.markstart-card__body p {
+    margin: 0 0 16px;
+    color: var(--markstart-text);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.markstart-empty {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.markstart-empty__title {
+    margin: 0 0 18px;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--markstart-text);
+}
+
+.markstart-card--empty {
+    display: inline-block;
+    width: auto;
+    padding: 18px 22px;
+}
+
+@media (max-width: 900px) {
+    .markstart-user,
+    .markstart-guest {
+        width: min(100% - 24px, 1400px);
+    }
+
+    .markstart-feature {
+        grid-template-columns: 1fr;
+    }
+
+    .markstart-feature--reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .markstart-feature__image--left,
+    .markstart-feature__image--right {
+        margin: 12px;
+    }
+
+    .markstart-feature__copy {
+        padding: 18px 20px 22px;
+    }
+}

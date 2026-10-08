@@ -53,12 +53,12 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Registro(string Nombre, string Apellido, string Usuario, string NombreUsuario, string Contraseña, string Email, int Telefono)
+    public IActionResult Registro(string Nombre, string Apellido, string Contraseña, string Email, int Telefono)
     {
         BD bd = new BD();
-        Usuario u = new Usuario(Nombre, Apellido, nombreDeUsuario, Contraseña, 0, Email, Telefono);
+        Usuario u = new Usuario(Nombre, Apellido, Contraseña, 0, Email, Telefono);
 
-        if (bd.buscarPorNombreUsuario(u.Usuario) == null)
+        if (bd.buscarPorNombreUsuario(u.Email) == null)
         {
             bd.agregarUsuario(u);
             return RedirectToAction("InicioSesion", "Home");

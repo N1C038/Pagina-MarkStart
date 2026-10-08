@@ -4,46 +4,62 @@
 
 @if (ViewBag.Usuario != "")
 {
-    <h1 class="display-4">Bienvenido @ViewBag.Usuario</h1>
-    <h2>¿Que vas a hacer hoy?</h2>
-    @foreach (ValuePair<Curso, Tarea> curso in ViewBag.Cursos)
-    {
-        <h5 class="card-title">@curso.Key.Nombre</h5>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h6>@curso.Value.Nombre</h6>
-                <p class="card-text">@curso.Value.Descripcion</p>
-                <a href="@Url.Action("Tareas", "Home", new { id = curso.Id })" class="btn btn-primary">Hacer Tareas</a>
+    <div class="markstart-user">
+        <h1 class="markstart-user__title">Bienvenido <span>@ViewBag.Usuario</span></h1>
+        <h2 class="markstart-user__subtitle">¿Que vas a hacer hoy?</h2>
+
+        @if (ViewBag.Cursos == null || ViewBag.Cursos.Count == 0)
+        {
+            <div class="markstart-empty">
+                <h5 class="markstart-empty__title">No tienes cursos comprados</h5>
+                <div class="markstart-card markstart-card--empty">
+                    <a href="@Url.Action("Cursos", "Home")" class="markstart-btn">Comprar un Nuevo Curso</a>
+                </div>
             </div>
-        </div>
-    }
-    @if (ViewBag.Cursos == null || ViewBag.Cursos.Count == 0)
-    {
-        <h5 class="card-title">No tienes cursos comprados</h5>
-        <div class="card mb-3">
-            <div class="card-body">
-                <a href="@Url.Action("Cursos", "Home")" class="btn btn-primary">Comprar un Nuevo Curso</a>
-            </div>
-        </div>
-    }
+        }
+        else
+        {
+            @foreach (KeyValuePair<Curso, Tarea> curso in ViewBag.Cursos)
+            {
+                <div class="markstart-card">
+                    <h5 class="markstart-card__title">@curso.Key.Nombre</h5>
+                    <div class="markstart-card__body">
+                        <h6>@curso.Value.Nombre</h6>
+                        <p>@curso.Value.Explicacion</p>
+                        <a href="@Url.Action("Tareas", "Home", new {Id = curso.Key.Id })" class="markstart-btn">Hacer Tareas</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 }
 else
 {
-    <h1 class="display-4">¿Querés aprender marketing?</h1>
-    <h2>¡Entonces MarkStart es tu solución!</h2>
-    <a href="@Url.Action("Registro", "Home")" class="btn btn-primary">Registrarse</a>
-    <div>
-        <img src="img/marketing.jpg" alt="Marketing" class="img-fluid mt-4"/>
-        <h3>¿Que es el marketing?</h3>
-        <p>El marketing es el conjunto de estrategias que ayudan a una empresa a conocer a su público, comunicar lo que ofrece y conectar con sus clientes.</p>
-        <a href="@Url.Action("Marketing", "Home")" class="btn btn-primary">Conocer mas</a>
-    </div>
-    <div>
-        <h3>¿Quienes somos?</h3>
-        <p>En MarkStart ayudamos a los emprendedores a aprender marketing de forma simple y eficaz, brindándoles las herramientas y el acompañamiento necesarios para hacer crecer sus proyectos.</p>
-        <a href="@Url.Action("MarkStart", "Home")" class="btn btn-primary">Conocer mas</a>
-        <img src="img/MarkStart.jpg" alt="MarkStart" class="img-fluid mt-4"/>
-    </div>
+    <div class="markstart-guest">
+        <h1 class="markstart-guest__title">¿Querés aprender marketing?</h1>
+        <h2 class="markstart-guest__subtitle">¡Entonces MarkStart es tu solución!</h2>
 
+        <div class="markstart-guest__cta">
+            <a href="@Url.Action("Registro", "Home")" class="markstart-btn markstart-btn--primary">Registrarse</a>
+        </div>
+
+        <div class="markstart-feature">
+            <div class="markstart-feature__image markstart-feature__image--left"></div>
+            <div class="markstart-feature__copy">
+                <h3>¿Que es el marketing?</h3>
+                <p>El marketing es el conjunto de estrategias que ayudan a una empresa a conocer a su público, comunicar lo que ofrece y conectar con sus clientes.</p>
+                <a href="@Url.Action("Marketing", "Home")" class="markstart-btn markstart-btn--primary">Conoce mas</a>
+            </div>
+        </div>
+
+        <div class="markstart-feature markstart-feature--reverse">
+            <div class="markstart-feature__copy">
+                <h3>¿Quienes somos?</h3>
+                <p>En MarkStart ayudamos a los emprendedores a aprender marketing de forma simple y eficaz, brindándoles las herramientas y el acompañamiento necesarios para hacer crecer sus proyectos.</p>
+                <a href="@Url.Action("MarkStart", "Home")" class="markstart-btn markstart-btn--primary">Conoce mas</a>
+            </div>
+            <div class="markstart-feature__image markstart-feature__image--right"></div>
+        </div>
+    </div>
 }
 
