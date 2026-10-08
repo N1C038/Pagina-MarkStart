@@ -72,4 +72,10 @@ public class HomeController : Controller
 
         return RedirectToAction("PaginaPrincipal", "Home");
     }
+    public IActionResult PasarCursos()
+    {
+        BD bd = new BD();
+        List<Curso> cursos = bd.obtenerCursos();
+        return View(cursos);
+    }
 }

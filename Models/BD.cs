@@ -31,3 +31,11 @@ public class BD
             return connection.QueryFirstOrDefault<Usuario>(query, new { NombreUsuario = NombreUsuario });
         }
     }
+    public List<Curso> obtenerCursos()
+    {
+        string query = "SELECT Nombre, Descripcion, Id, Precio, CantidadTareas, FotoCurso FROM Cursos";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            return connection.Query<Curso>(query).ToList();
+        }
+    }
