@@ -1,0 +1,22 @@
+@{
+    var usuario = Context.Session.GetString("Usuario");
+    var nombre = Context.Session.GetString("Nombre");
+    var foto = Context.Session.GetString("FotoPerfil");
+}
+
+@if (!string.IsNullOrEmpty(usuario))
+{
+    <div class="d-flex align-items-center" style="gap:12px;">
+        <div class="text-center">
+            @if (!string.IsNullOrEmpty(foto))
+            {
+                <img src="@Url.Content("~/" + foto)" alt="FotoPerfil" class="rounded-circle" style="width:56px;height:56px;object-fit:cover;" />
+            }
+            else
+            {
+                <div class="rounded-circle bg-secondary" style="width:56px;height:56px;"></div>
+            }
+            <div class="small mt-1">@(!string.IsNullOrEmpty(nombre) ? nombre : usuario)</div>
+        </div>
+    </div>
+}

@@ -1,17 +1,23 @@
 using System.Diagnostics;
+using System;
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using MarkStart.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 namespace MarkStart.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IWebHostEnvironment _env;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
     {
         _logger = logger;
+        _env = env;
     }
 
     public IActionResult Index()
@@ -41,10 +47,25 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult Registro(string Nombre, string Apellido, string Usuario, string NombreUsuario, string Contraseña, string Email, int Telefono)
+    public IActionResult Registro(string Nombre, string Apellido, string Usuario, string Contraseña, string Email, int Telefono, IFormFile FotoPerfil)
     {
         BD bd = new BD();
-        Usuario u = new Usuario(Nombre, Apellido, nombreDeUsuario, Contraseña, 0, Email, Telefono);
+        string fotoRuta = null;
+
+        if (FotoPerfil != null && FotoPerfil.Length > 0)
+        {
+            string carpeta = Path.Combine(_env.WebRootPath ?? "wwwroot", "imagenes");
+            if (!Directory.Exists(carpeta)) Directory.CreateDirectory(carpeta);
+            string nombreUnico = Guid.NewGuid().ToString() + Path.GetExtension(FotoPerfil.FileName);
+            string rutaCompleta = Path.Combine(carpeta, nombreUnico);
+            using (var stream = new FileStream(rutaCompleta, FileMode.Create))
+            {
+                FotoPerfil.CopyTo(stream);
+            }
+            fotoRuta = Path.Combine("imagenes", nombreUnico).Replace("\\","/");
+        }
+
+        Usuario u = new Usuario(Nombre, Apellido, Usuario, Contraseña, 0, Email, Telefono, fotoRuta);
 
         if (bd.buscarPorNombreUsuario(u.Usuario) == null)
         {
@@ -69,6 +90,12 @@ public class HomeController : Controller
 
         HttpContext.Session.SetString("Usuario", usuarioEncontrado.Usuario);
         HttpContext.Session.SetString("Contraseña", usuarioEncontrado.Contraseña);
+
+        // Store additional fields for header display
+        if (!string.IsNullOrEmpty(usuarioEncontrado.Nombre))
+            HttpContext.Session.SetString("Nombre", usuarioEncontrado.Nombre);
+        if (!string.IsNullOrEmpty(usuarioEncontrado.FotoPerfil))
+            HttpContext.Session.SetString("FotoPerfil", usuarioEncontrado.FotoPerfil);
 
         return RedirectToAction("PaginaPrincipal", "Home");
     }

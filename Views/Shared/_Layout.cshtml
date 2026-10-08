@@ -27,6 +27,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <div class="d-flex align-items-center">
+                        @{ var usuarioSesion = Context.Session.GetString("Usuario"); }
+                        @if (!string.IsNullOrEmpty(usuarioSesion))
+                        {
+                            @Html.Partial("_UserHeader")
+                        }
+                        else
+                        {
+                            <a class="btn btn-dark" asp-area="" asp-controller="Home" asp-action="InicioSesion">Iniciar Sesión</a>
+                        }
+                    </div>
                 </div>
             </div>
         </nav>
