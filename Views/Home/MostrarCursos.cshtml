@@ -1,0 +1,80 @@
+@{
+    ViewData["Title"] = "Cursos";
+}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="text-center mb-5">Nuestros Cursos</h1>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (var curso in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(curso.FotoCurso))
+                        {
+                            <img src="@curso.FotoCurso" class="card-img-top" alt="@curso.Nombre" style="height: 250px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary" style="height: 250px; display: flex; align-items: center; justify-content: center;">
+                                <span class="text-white">Sin imagen</span>
+                            </div>
+                        }
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@curso.Nombre</h5>
+                            <p class="card-text text-muted flex-grow-1">@curso.Descripcion</p>
+                            
+                            <div class="mt-3">
+                                <p class="mb-2">
+                                    <strong>Precio:</strong> $@curso.Precio
+                                </p>
+                                <p class="mb-2">
+                                    <strong>Cantidad de Tareas:</strong> @curso.CantidadTareas
+                                </p>
+                                <p class="text-secondary small">
+                                    <strong>ID:</strong> @curso.Id
+                                </p>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <button class="btn btn-primary w-100">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <h4>No hay cursos disponibles</h4>
+            <p>Por favor, intente más tarde.</p>
+        </div>
+    }
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .card-title {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>
