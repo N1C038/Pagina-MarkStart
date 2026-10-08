@@ -15,7 +15,19 @@ public class HomeController : Controller
     }
 
     public IActionResult Index()
-    {
+    { 
+        var usuario = HttpContext.Session.GetString("Usuario");
+        if (string.IsNullOrEmpty(usuario))
+        {
+            usuario = "";
+        }
+        else
+        {
+            BD bd = new BD();
+            Dictionary<Curso, Tarea> cursosEncontrados = bd.buscarCursosYTareasUsuario(int.Parse(HttpContext.Session.GetString("Id")));
+            ViewBag.Cursos = cursosEncontrados;
+        }
+        ViewBag.Usuario = usuario;
         return View();
     }
 
@@ -57,18 +69,18 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult InicioSesion(string Usuario, string Contraseña)
+    public IActionResult InicioSesion(string Email, string Contraseña)
     {
         BD bd = new BD();
-        Usuario usuarioEncontrado = bd.encontrarUsuario(Usuario, Contraseña);
+        Usuario usuarioEncontrado = bd.encontrarUsuario(Email, Contraseña);
         if (usuarioEncontrado == null)
         {
             ViewBag.Error = "Usuario o contraseña incorrectos.";
             return View();
         }
 
-        HttpContext.Session.SetString("Usuario", usuarioEncontrado.Usuario);
-        HttpContext.Session.SetString("Contraseña", usuarioEncontrado.Contraseña);
+        HttpContext.Session.SetString("Usuario", usuarioEncontrado.Nombre);
+        HttpContext.Session.SetString("Id", usuarioEncontrado.Id.ToString());
 
         return RedirectToAction("PaginaPrincipal", "Home");
     }

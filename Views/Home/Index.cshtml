@@ -2,7 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@if (ViewBag.Usuario != "")
+{
+    <h1 class="display-4">Bienvenido @ViewBag.Usuario</h1>
+    <h2>¿Que vas a hacer hoy?</h2>
+    @foreach (ValuePair<Curso, Tarea> curso in ViewBag.Cursos)
+    {
+        <h5 class="card-title">@curso.Key.Nombre</h5>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6>@curso.Value.Nombre</h6>
+                <p class="card-text">@curso.Value.Descripcion</p>
+                <a href="@Url.Action("Tareas", "Home", new { id = curso.Id })" class="btn btn-primary">Hacer Tareas</a>
+            </div>
+        </div>
+    }
+    @if (ViewBag.Cursos == null || ViewBag.Cursos.Count == 0)
+    {
+        <h5 class="card-title">No tienes cursos comprados</h5>
+        <div class="card mb-3">
+            <div class="card-body">
+                <a href="@Url.Action("Cursos", "Home")" class="btn btn-primary">Comprar un Nuevo Curso</a>
+            </div>
+        </div>
+    }
+}
+else
+{
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+}
+
