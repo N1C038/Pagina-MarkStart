@@ -30,7 +30,6 @@ body {
   text-align: start;
 }
 
-<<<<<<< HEAD
 /* ========================================================= */
 /* MARKSTART HOME */
 /* ========================================================= */
@@ -242,6 +241,148 @@ body {
     padding: 18px 22px;
 }
 
+.markstart-guest {
+    max-width: 1250px;
+}
+
+.markstart-guest__title,
+.markstart-guest__subtitle {
+    display: block;
+}
+
+.markstart-hero-carousel {
+    position: relative;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+#carouselHero {
+    position: relative;
+    border: 3px solid #1a8db7;
+    background: #edf5f7;
+    min-height: 480px;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+#carouselHero .carousel-inner,
+#carouselHero .carousel-item {
+    height: 100%;
+}
+
+.hero-slide {
+    position: relative;
+    width: 100%;
+    min-height: 480px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 14, 24, 0.08);
+}
+
+.hero-slide--marketing {
+    background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80');
+}
+
+.hero-slide--team {
+    background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80');
+}
+
+.hero-slide--growth {
+    background-image: url('https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=1400&q=80');
+}
+
+.hero-card {
+    position: absolute;
+    right: 0px;
+    bottom: 0;
+    width: min(320px, calc(100% - 26px));
+    background: rgba(255, 255, 255, 0.88);
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    padding: 14px 16px 10px;
+    box-shadow: 0 16px 28px rgba(15, 38, 52, 0.12);
+    backdrop-filter: blur(2px);
+}
+
+.hero-card h3 {
+    margin: 0 0 8px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.15rem, 0.8vw + 0.7rem, 1.85rem);
+    line-height: 1.1;
+    color: #111;
+}
+
+.hero-card p {
+    margin: 0 0 12px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    color: #1b1b1b;
+}
+
+.hero-card .markstart-btn {
+    min-width: 120px;
+    min-height: 34px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+}
+
+.hero-arrow {
+    position: absolute;
+    top: 53%;
+    transform: translateY(-50%);
+    width: 52px;
+    height: 52px;
+    border: 0;
+    background: transparent;
+    opacity: 1;
+    z-index: 3;
+}
+
+.hero-arrow--prev {
+    left: 14px;
+}
+
+.hero-arrow--next {
+    right: 14px;
+}
+
+.hero-arrow .carousel-control-prev-icon,
+.hero-arrow .carousel-control-next-icon {
+    width: 32px;
+    height: 32px;
+    filter: invert(1) brightness(0.2);
+}
+
+.hero-dots {
+    position: absolute;
+    right: 38px;
+    bottom: 12px;
+    left: auto;
+    margin: 0;
+    width: auto;
+    z-index: 4;
+}
+
+.hero-dots [data-bs-target] {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 0;
+    margin: 0 5px;
+}
+
+.hero-dots .active {
+    background-color: #0c7da9;
+}
+
 @media (max-width: 900px) {
     .markstart-user,
     .markstart-guest {
@@ -264,8 +405,30 @@ body {
     .markstart-feature__copy {
         padding: 18px 20px 22px;
     }
+
+    .markstart-hero-carousel {
+        padding: 0 18px;
+    }
+
+    #carouselHero {
+        min-height: 430px;
+    }
+
+    .hero-slide {
+        min-height: 430px;
+    }
+
+    .hero-card {
+        right: 18px;
+        bottom: 18px;
+        width: min(360px, calc(100% - 36px));
+        padding: 18px 18px 14px;
+    }
+
+    .hero-arrow {
+        top: 50%;
+    }
 }
-=======
 /* Header / Registro styles */
 .page-header {
   background: #bfe7ef;
@@ -306,4 +469,71 @@ body {
 
 /* Form container spacing */
 .registro-container { margin-top: 24px; }
->>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
+
+.markstart-course-gallery,
+.markstart-review-gallery {
+    width: min(1180px, calc(100% - 60px));
+    margin: 0 auto 40px;
+}
+
+.markstart-course-gallery h3,
+.markstart-review-gallery h3 {
+    margin: 0 0 18px;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 2vw + 1rem, 3rem);
+    font-weight: 700;
+    color: var(--markstart-text);
+}
+
+.markstart-course-gallery__items,
+.markstart-review-gallery__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.markstart-course-item,
+.markstart-review-item {
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #1a8db7;
+    background: #fff;
+    min-height: 250px;
+}
+
+.markstart-course-item img,
+.markstart-review-item img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.markstart-course-item__info,
+.markstart-review-item__info {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    color: #111;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    padding: 7px 12px;
+    box-shadow: 0 8px 18px rgba(15, 38, 52, 0.12);
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .markstart-course-gallery,
+    .markstart-review-gallery {
+        width: min(100% - 24px, 1180px);
+    }
+
+    .markstart-course-gallery__items,
+    .markstart-review-gallery__items {
+        grid-template-columns: 1fr;
+    }
+}

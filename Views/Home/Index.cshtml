@@ -43,22 +43,73 @@ else
             <a href="@Url.Action("Registro", "Home")" class="markstart-btn markstart-btn--primary">Registrarse</a>
         </div>
 
-        <div class="markstart-feature">
-            <div class="markstart-feature__image markstart-feature__image--left"></div>
-            <div class="markstart-feature__copy">
-                <h3>¿Que es el marketing?</h3>
-                <p>El marketing es el conjunto de estrategias que ayudan a una empresa a conocer a su público, comunicar lo que ofrece y conectar con sus clientes.</p>
-                <a href="@Url.Action("Marketing", "Home")" class="markstart-btn markstart-btn--primary">Conoce mas</a>
+        <div class="markstart-hero-carousel">
+            <div id="carouselHero" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="hero-slide hero-slide--marketing">
+                            <div class="hero-card">
+                                <h3>¿Qué es el marketing?</h3>
+                                <p>El marketing es el conjunto de estrategias que ayudan a una empresa a conocer a su público, comunicar lo que ofrece y conectar con sus clientes.</p>
+                                <a href="@Url.Action("Marketing", "Home")" class="markstart-btn markstart-btn--primary">Conoce más</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="hero-slide hero-slide--team">
+                            <div class="hero-card">
+                                <h3>¿Quiénes somos?</h3>
+                                <p>En MarkStart ayudamos a los emprendedores a aprender marketing de forma simple y eficaz, brindándoles herramientas y acompañamiento para hacer crecer sus proyectos.</p>
+                                <a href="@Url.Action("MarkStart", "Home")" class="markstart-btn markstart-btn--primary">Conoce más</a>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <button class="carousel-control-prev hero-arrow hero-arrow--prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev" aria-label="Anterior">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next hero-arrow hero-arrow--next" type="button" data-bs-target="#carouselHero" data-bs-slide="next" aria-label="Siguiente">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+
+                <div class="carousel-indicators hero-dots">
+                    <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselHero" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                </div>
             </div>
         </div>
-
-        <div class="markstart-feature markstart-feature--reverse">
-            <div class="markstart-feature__copy">
-                <h3>¿Quienes somos?</h3>
-                <p>En MarkStart ayudamos a los emprendedores a aprender marketing de forma simple y eficaz, brindándoles las herramientas y el acompañamiento necesarios para hacer crecer sus proyectos.</p>
-                <a href="@Url.Action("MarkStart", "Home")" class="markstart-btn markstart-btn--primary">Conoce mas</a>
+    </div>
+    <div class="markstart-course-gallery">
+        <h3>Algunos de nuestros cursos</h3>
+        <div class="markstart-course-gallery__items">
+        @foreach (var curso in ViewBag.Cursos)
+        {
+             <div class="markstart-course-item">
+                <img src="@curso.Imagen" alt="@curso.Nombre">
+                <button class="markstart-course-item__info">Más información</button>
             </div>
-            <div class="markstart-feature__image markstart-feature__image--right"></div>
+            <h4>@curso.Nombre</h4>
+        }
+        </div>
+    </div>
+
+   
+
+    <div class="markstart-review-gallery">
+        <h3>Algunas opiniones sobre MarkStart</h3>
+        <div class="markstart-review-gallery__items">
+            @foreach (var reseña in ViewBag.Reseñas)
+            {
+                <div class="markstart-review-item">
+                    <img src="@reseña.Imagen" alt="@reseña.Nombre">
+                    <h5>@reseña.Texto</h5>
+                    <button class="markstart-review-item__info">Más información</button>
+                </div>
+            }
         </div>
     </div>
 }

@@ -26,6 +26,7 @@ public class HomeController : Controller
         if (string.IsNullOrEmpty(usuario))
         {
             usuario = "";
+            ViewBag.Cursos = bd.obtener3Cursos();
         }
         else
         {
