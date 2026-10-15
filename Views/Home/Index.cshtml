@@ -26,7 +26,7 @@
                     <div class="markstart-card__body">
                         <h6>@curso.Value.Nombre</h6>
                         <p>@curso.Value.Explicacion</p>
-                        <a href="@Url.Action("Tareas", "Home", new {Id = curso.Key.Id })" class="markstart-btn">Hacer Tareas</a>
+                        <a href="@Url.Action("Tareas", "Home", new {Id = curso.Key.IdCurso })" class="markstart-btn">Hacer Tareas</a>
                     </div>
                 </div>
             }

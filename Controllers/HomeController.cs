@@ -30,8 +30,12 @@ public class HomeController : Controller
         else
         {
             BD bd = new BD();
-            Dictionary<Curso, Tarea> cursosEncontrados = bd.buscarCursosYTareasUsuario(int.Parse(HttpContext.Session.GetString("Id")));
-            ViewBag.Cursos = cursosEncontrados;
+            var idUsuarioSesion = HttpContext.Session.GetString("IdUsuario") ?? HttpContext.Session.GetString("Id");
+            if (int.TryParse(idUsuarioSesion, out int idUsuario))
+            {
+                Dictionary<Curso, Tarea> cursosEncontrados = bd.buscarCursosYTareasUsuario(idUsuario);
+                ViewBag.Cursos = cursosEncontrados;
+            }
         }
         ViewBag.Usuario = usuario;
         return View();
@@ -59,16 +63,10 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-<<<<<<< HEAD
-    public IActionResult Registro(string Nombre, string Apellido, string Contraseña, string Email, int Telefono)
+    public IActionResult Registro(string Nombre, string Apellido, string Contraseña, string Email, string Telefono, IFormFile FotoPerfil)
     {
         BD bd = new BD();
-        Usuario u = new Usuario(Nombre, Apellido, Contraseña, 0, Email, Telefono);
-=======
-    public IActionResult Registro(string Nombre, string Apellido, string Usuario, string Contraseña, string Email, int Telefono, IFormFile FotoPerfil)
-    {
-        BD bd = new BD();
-        string fotoRuta = null;
+        string fotoRuta = "imagenes/default-user.svg";
 
         if (FotoPerfil != null && FotoPerfil.Length > 0)
         {
@@ -83,17 +81,25 @@ public class HomeController : Controller
             fotoRuta = Path.Combine("imagenes", nombreUnico).Replace("\\","/");
         }
 
-        Usuario u = new Usuario(Nombre, Apellido, Usuario, Contraseña, 0, Email, Telefono, fotoRuta);
->>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
-
-        if (bd.buscarPorNombreUsuario(u.Email) == null)
+        if (bd.buscarUsuarioPorEmail(Email) != null)
         {
-            bd.agregarUsuario(u);
-            return RedirectToAction("InicioSesion", "Home");
+            ViewBag.Error = "El email ya está registrado.";
+            return View("Registro");
         }
 
-        ViewBag.error = "El nombre de usuario ya existe.";
-        return View("Registro");
+        Usuario u = new Usuario
+        {
+            Email = Email,
+            Nombre = Nombre,
+            EsAdmin = false,
+            Apellido = Apellido,
+            Telefono = Telefono,
+            FotoPerfil = fotoRuta,
+            Contraseña = Contraseña
+        };
+
+        bd.agregarUsuario(u);
+        return RedirectToAction("InicioSesion", "Home");
     }
 
     [HttpPost]
@@ -108,9 +114,9 @@ public class HomeController : Controller
         }
 
         HttpContext.Session.SetString("Usuario", usuarioEncontrado.Nombre);
-        HttpContext.Session.SetString("Id", usuarioEncontrado.Id.ToString());
+        HttpContext.Session.SetString("IdUsuario", usuarioEncontrado.IdUsuario.ToString());
+        HttpContext.Session.SetString("Id", usuarioEncontrado.IdUsuario.ToString());
 
-        // Store additional fields for header display
         if (!string.IsNullOrEmpty(usuarioEncontrado.Nombre))
             HttpContext.Session.SetString("Nombre", usuarioEncontrado.Nombre);
         if (!string.IsNullOrEmpty(usuarioEncontrado.FotoPerfil))
