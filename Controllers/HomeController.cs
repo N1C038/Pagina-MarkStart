@@ -61,13 +61,27 @@ public class HomeController : Controller
     {
         return View();
     }
-
+    public IActionResult Cursos()
+    {
+        BD bd = new BD();
+        List<Startup> startups = bd.obtenerStartupsUsuario(int.Parse(HttpContext.Session.GetString("IdUsuario") ?? "0"));
+        if(startups.Count > 0)
+        {
+            ViewBag.Startups = startups;
+            List<Curso> cursos = bd.obtenerCursosStartup(startups[0].IdStartup);
+            ViewBag.Cursos = cursos;
+        }
+        else{
+            List<Curso> cursos = bd.obtener3Cursos();
+            ViewBag.Cursos = cursos;
+        }
+        return View();     
+    }
     [HttpPost]
     public IActionResult Registro(string Nombre, string Apellido, string Contraseña, string Email, string Telefono, IFormFile FotoPerfil)
     {
         BD bd = new BD();
         string fotoRuta = "imagenes/default-user.svg";
-
         if (FotoPerfil != null && FotoPerfil.Length > 0)
         {
             string carpeta = Path.Combine(_env.WebRootPath ?? "wwwroot", "imagenes");
@@ -115,14 +129,13 @@ public class HomeController : Controller
 
         HttpContext.Session.SetString("Usuario", usuarioEncontrado.Nombre);
         HttpContext.Session.SetString("IdUsuario", usuarioEncontrado.IdUsuario.ToString());
-        HttpContext.Session.SetString("Id", usuarioEncontrado.IdUsuario.ToString());
 
         if (!string.IsNullOrEmpty(usuarioEncontrado.Nombre))
             HttpContext.Session.SetString("Nombre", usuarioEncontrado.Nombre);
         if (!string.IsNullOrEmpty(usuarioEncontrado.FotoPerfil))
             HttpContext.Session.SetString("FotoPerfil", usuarioEncontrado.FotoPerfil);
 
-        return RedirectToAction("PaginaPrincipal", "Home");
+        return RedirectToAction("Index", "Home");
     }
     public IActionResult PasarCursos()
     {

@@ -1,3 +1,17 @@
+@font-face {
+    font-family: "IBM Plex Sans";
+    src: url("/Fonts/IBM_Plex_Sans/static/IBMPlexSans-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "IBM Plex Serif";
+    src: url("/Fonts/IBM_Plex_Serif/IBMPlexSerif-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
 html {
   font-size: 14px;
 }
@@ -19,6 +33,24 @@ html {
 
 body {
   margin-bottom: 60px;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 400;
+}
+
+button,
+.btn,
+.markstart-btn,
+.btn-login,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-weight: 400;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -30,7 +62,6 @@ body {
   text-align: start;
 }
 
-<<<<<<< HEAD
 /* ========================================================= */
 /* MARKSTART HOME */
 /* ========================================================= */
@@ -59,8 +90,8 @@ body {
 .markstart-guest__title {
     margin: 0;
     text-align: center;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: 700;
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 400;
     line-height: 1.1;
     letter-spacing: -0.04em;
     color: var(--markstart-text);
@@ -74,8 +105,8 @@ body {
 .markstart-guest__subtitle {
     margin: 10px 0 18px;
     text-align: center;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: 700;
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 400;
     line-height: 1.2;
     color: var(--markstart-text);
 }
@@ -107,7 +138,7 @@ body {
     background: var(--markstart-blue-dark);
     color: #ffffff;
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 400;
     border: none;
     text-decoration: none;
     transition: filter 0.2s ease, transform 0.2s ease;
@@ -173,9 +204,9 @@ body {
 
 .markstart-feature__copy h3 {
     margin: 0 0 18px;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "IBM Plex Serif", serif;
     font-size: clamp(2.1rem, 1.8vw + 1rem, 3rem);
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.2;
     color: var(--markstart-text);
 }
@@ -201,8 +232,9 @@ body {
 .markstart-card__title {
     margin: 0;
     padding: 14px 18px 0;
+    font-family: "IBM Plex Serif", serif;
     font-size: 1.3rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--markstart-text);
 }
 
@@ -212,8 +244,9 @@ body {
 
 .markstart-card__body h6 {
     margin: 0 0 8px;
+    font-family: "IBM Plex Serif", serif;
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--markstart-text);
 }
 
@@ -231,8 +264,9 @@ body {
 
 .markstart-empty__title {
     margin: 0 0 18px;
+    font-family: "IBM Plex Serif", serif;
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--markstart-text);
 }
 
@@ -265,45 +299,120 @@ body {
         padding: 18px 20px 22px;
     }
 }
-=======
-/* Header / Registro styles */
-.page-header {
-  background: #bfe7ef;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+/* Registro */
+.registro-page {
+    width: min(70.2vw, 1348px);
+    margin: 28px auto 34px;
 }
-.page-header .header-inner {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-.page-header .brand {
-  font-weight: 600;
-  color: #1f2d33;
-  text-decoration: none;
-}
-.page-header .header-nav {
-  display: none;
-  gap: 20px;
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  .page-header .header-nav { display: flex; }
-}
-.page-header .header-right {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-}
-.user-block { display:flex; align-items:center; gap:10px; }
-.user-avatar {
-  width:56px; height:56px; border-radius:50%; object-fit:cover; display:block;
-}
-.user-avatar--placeholder { background:#6c757d; width:56px; height:56px; border-radius:50%; }
-.user-name { font-size:13px; font-weight:600; text-align:center; }
-.btn-login { background:#000; color:#fff; border-radius:4px; padding:8px 12px; }
 
-/* Form container spacing */
-.registro-container { margin-top: 24px; }
->>>>>>> 456a7160cce5fb72a2bf49670b4e6eff7b1a05ae
+.registro-title {
+    margin: 0 0 18px;
+    text-align: center;
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 2.4vw + 0.8rem, 4.1rem);
+    color: var(--markstart-text);
+}
+
+.registro-alert {
+    width: min(440px, calc(100% - 32px));
+    margin: 0 auto 14px;
+}
+
+.registro-card {
+    padding: 26px 24px 28px;
+    background: var(--markstart-blue-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.registro-field {
+    width: 100%;
+    max-width: 330px;
+    margin-bottom: 10px;
+}
+
+.registro-field .form-label {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    color: rgba(17, 17, 17, 0.82);
+}
+
+.registro-field .form-control {
+    height: 42px;
+    border: none;
+    border-radius: 0;
+    font-size: 0.95rem;
+    padding: 8px 11px;
+}
+
+.registro-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+.registro-file-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 38px;
+    background: var(--markstart-blue-dark);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.registro-submit {
+    margin-top: 16px;
+    width: 130px;
+    height: 48px;
+    border: none;
+    background: var(--markstart-blue-dark);
+    color: #ffffff;
+    font-size: 0.98rem;
+}
+
+.registro-page--login .registro-title {
+    margin-bottom: 20px;
+}
+
+.registro-card--login {
+    justify-content: flex-start;
+    padding-top: 24px;
+}
+
+.registro-field--login {
+    margin-bottom: 18px;
+}
+
+.registro-field--last {
+    margin-bottom: 0;
+}
+
+.registro-card--login .registro-submit {
+    margin-top: 14px;
+}
+
+@media (max-width: 992px) {
+    .registro-page {
+        width: min(100%, calc(100vw - 24px));
+        margin-top: 20px;
+    }
+
+    .registro-card {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+}
