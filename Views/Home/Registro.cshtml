@@ -1,87 +1,52 @@
 @{
     ViewData["Title"] = "Registro";
 }
-
-<header class="page-header">
-    <div class="container-fluid header-inner">
-        <div class="d-flex align-items-center">
-            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">MarkStart</a>
-            <nav class="header-nav d-none d-md-flex">
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a>
-            </nav>
-        </div>
-
-        <div class="header-right">
-            @{ var usuarioSesion = Context.Session.GetString("Usuario"); var nombreSesion = Context.Session.GetString("Nombre"); var fotoSesion = Context.Session.GetString("FotoPerfil"); }
-            @if (!string.IsNullOrEmpty(usuarioSesion))
-            {
-                <div class="user-block">
-                    @if (!string.IsNullOrEmpty(fotoSesion))
-                    {
-                        <img src="@Url.Content("~/" + fotoSesion)" alt="FotoPerfil" class="user-avatar" />
-                    }
-                    else
-                    {
-                        <div class="user-avatar--placeholder"></div>
-                    }
-                    <div class="user-name">@(!string.IsNullOrEmpty(nombreSesion) ? nombreSesion : usuarioSesion)</div>
-                </div>
-            }
-            else
-            {
-                <a class="btn-login" asp-area="" asp-controller="Home" asp-action="InicioSesion">Iniciar Sesión</a>
-            }
-        </div>
-    </div>
-</header>
-
-<div class="container registro-container">
-    <h2>Registro de usuario</h2>
+<section class="registro-page">
+    <h2 class="registro-title">Registrarse</h2>
 
     @if (!string.IsNullOrWhiteSpace(ViewBag.Message))
     {
-        <div class="alert alert-success">@ViewBag.Message</div>
+        <div class="alert alert-success registro-alert">@ViewBag.Message</div>
     }
     @if (!string.IsNullOrWhiteSpace(ViewBag.Error))
     {
-        <div class="alert alert-danger">@ViewBag.Error</div>
+        <div class="alert alert-danger registro-alert">@ViewBag.Error</div>
     }
 
-    <form action="@Url.Action("Registro", "Home")" method="post" enctype="multipart/form-data">
+    <form class="registro-card" action="@Url.Action("Registro", "Home")" method="post" enctype="multipart/form-data">
 
-        <div class="mb-3">
-            <label for="Nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" name="Nombre" />
+        <div class="registro-field">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="Nombre" placeholder="Mateo" />
         </div>
 
-        <div class="mb-3">
-            <label for="Apellido" class="form-label">Apellido</label>
-            <input type="text" class="form-control" name="Apellido" />
+        <div class="registro-field">
+            <label class="form-label">Apellido</label>
+            <input type="text" class="form-control" name="Apellido" placeholder="Fernández" />
         </div>
 
-        <div class="mb-3">
-            <label for="Email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="Email" />
+        <div class="registro-field">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="Email" placeholder="MateoFernandez@gmail.com" />
         </div>
 
-        <div class="mb-3">
-            <label for="Telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" name="Telefono" />
+        <div class="registro-field">
+            <label class="form-label">Teléfono</label>
+            <input type="text" class="form-control" name="Telefono" placeholder="+54 9 11 1234-5678" />
         </div>
 
-        <div class="mb-3">
-            <label for="Contraseña" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="Contraseña" />
+        <div class="registro-field">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="Contraseña" placeholder="..............." />
         </div>
 
-        <div class="mb-3">
-            <label for="FotoPerfil" class="form-label">FotoPerfil</label>
-            <input type="file" class="form-control" name="FotoPerfil" />
+        <div class="registro-field">
+            <label class="form-label" for="FotoPerfil">Foto de Perfil</label>
+            <input type="file" class="registro-file-input" name="FotoPerfil" id="FotoPerfil" />
+            <label class="registro-file-button" for="FotoPerfil">+</label>
         </div>
 
-        <input type="submit" class="btn btn-primary" value="Registrar" />
+        <input type="submit" class="registro-submit" value="Registrarse" />
     </form>
-</div>
+</section>
         

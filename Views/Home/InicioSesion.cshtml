@@ -1,61 +1,26 @@
 @{
     ViewData["Title"] = "Inicio de Sesión";
 }
-
-<header class="page-header">
-    <div class="container-fluid header-inner">
-        <div class="d-flex align-items-center">
-            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">MarkStart</a>
-            <nav class="header-nav d-none d-md-flex">
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a>
-            </nav>
-        </div>
-
-        <div class="header-right">
-            @{ var usuarioSesion = Context.Session.GetString("Usuario"); var nombreSesion = Context.Session.GetString("Nombre"); var fotoSesion = Context.Session.GetString("FotoPerfil"); }
-            @if (!string.IsNullOrEmpty(usuarioSesion))
-            {
-                <div class="user-block">
-                    @if (!string.IsNullOrEmpty(fotoSesion))
-                    {
-                        <img src="@Url.Content("~/" + fotoSesion)" alt="FotoPerfil" class="user-avatar" />
-                    }
-                    else
-                    {
-                        <div class="user-avatar--placeholder"></div>
-                    }
-                    <div class="user-name">@(!string.IsNullOrEmpty(nombreSesion) ? nombreSesion : usuarioSesion)</div>
-                </div>
-            }
-            else
-            {
-                <a class="btn-login" asp-area="" asp-controller="Home" asp-action="InicioSesion">Iniciar Sesión</a>
-            }
-        </div>
-    </div>
-</header>
-
-<div class="container registro-container mt-4" style="max-width: 500px;">
-    <h2>Iniciar sesión</h2>
+<section class="registro-page registro-page--login">
+    <h2 class="registro-title">Iniciar Sesión</h2>
 
     @if (!string.IsNullOrWhiteSpace(ViewBag.Error))
     {
-        <div class="alert alert-danger">@ViewBag.Error</div>
+        <div class="alert alert-danger registro-alert">@ViewBag.Error</div>
     }
 
-    <form action="@Url.Action("InicioSesion", "Home")" method="post">
-        <div class="mb-3">
+    <form class="registro-card registro-card--login" action="@Url.Action("InicioSesion", "Home")" method="post">
+
+        <div class="registro-field registro-field--login">
             <label for="Email" class="form-label">Email</label>
-            <input id="Email" name="Email" class="form-control" />
+            <input id="Email" name="Email" class="form-control" placeholder="MateoFernandez@gmail.com" />
         </div>
 
-        <div class="mb-3">
-            <label for="Contraseña" class="form-label">Clave</label>
-            <input id="Contraseña" name="Contraseña" type="password" class="form-control" />
+        <div class="registro-field registro-field--login registro-field--last">
+            <label for="Contraseña" class="form-label">Contraseña</label>
+            <input id="Contraseña" name="Contraseña" type="password" class="form-control" placeholder="..............." />
         </div>
 
-        <input type="submit" class="btn btn-primary" value="Ingresar" />
+        <input type="submit" class="registro-submit" value="Iniciar Sesión" />
     </form>
-</div>
+</section>
