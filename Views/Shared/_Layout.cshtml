@@ -11,36 +11,44 @@
 </head>
 <body>
     <header class="page-header">
-    <div class="container-fluid header-inner">
-        <div class="d-flex align-items-center">
-            <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">MarkStart</a>
-            <nav class="header-nav d-none d-md-flex">
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
-                <a class="text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a>
-            </nav>
-        </div>
+        <div class="header-inner">
+            <div class="brand-block">
+                <a class="brand" asp-area="" asp-controller="Home" asp-action="Index" aria-label="MarkStart home">
+                    <img src="~/imagenes/LogoHorizontal.png" alt="MarkStart" class="brand-logo" />
+                </a>
+            </div>
 
-        <div class="header-right">
-            @{ var usuarioSesion = Context.Session.GetString("Usuario"); var nombreSesion = Context.Session.GetString("Nombre"); var fotoSesion = Context.Session.GetString("FotoPerfil"); }
-            @if (!string.IsNullOrEmpty(usuarioSesion))
-            {
-                <div class="user-block">
-                    @if (!string.IsNullOrEmpty(fotoSesion))
-                    {
-                        <img src="@Url.Content("~/" + fotoSesion)" alt="FotoPerfil" class="user-avatar" />
-                    }
-                    else
-                    {
-                        <div class="user-avatar--placeholder"></div>
-                    }
-                    <div class="user-name">@(!string.IsNullOrEmpty(nombreSesion) ? nombreSesion : usuarioSesion)</div>
-                </div>
-            }
-            else
-            {
-                <a class="btn-login" asp-area="" asp-controller="Home" asp-action="InicioSesion">Iniciar Sesión</a>
-            }
+            @{ var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); var isHome = currentController == "Home" && currentAction == "Index"; var isNosotros = currentController == "Home" && (currentAction == "Privacy" || currentAction == "Nosotros"); var isMarketing = currentController == "Home" && (currentAction == "Privacy" || currentAction == "Marketing"); var isCursos = currentController == "Home" && currentAction == "Cursos"; }
+            <nav class="header-nav" aria-label="Main navigation">
+                <a class="header-link @(isHome ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="header-link @(isNosotros ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
+                <a class="header-link @(isMarketing ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a>
+                @if (!string.IsNullOrEmpty(Context.Session.GetString("Usuario")))
+                {
+                    <a class="header-link @(isCursos ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Cursos">Cursos</a>
+                }
+            </nav>
+
+            <div class="header-right">
+                @{ var usuarioSesion = Context.Session.GetString("Usuario"); var nombreSesion = Context.Session.GetString("Nombre"); var fotoSesion = Context.Session.GetString("FotoPerfil"); }
+                @if (!string.IsNullOrEmpty(usuarioSesion))
+                {
+                    <div class="user-block">
+                        @if (!string.IsNullOrEmpty(fotoSesion))
+                        {
+                            <img src="@Url.Content("~/" + fotoSesion)" alt="FotoPerfil" class="user-avatar" />
+                        }
+                        else
+                        {
+                            <div class="user-avatar--placeholder"></div>
+                        }
+                        <div class="user-name">@(!string.IsNullOrEmpty(nombreSesion) ? nombreSesion : usuarioSesion)</div>
+                    </div>
+                }
+                else
+                {
+                    <a class="btn-login" asp-area="" asp-controller="Home" asp-action="InicioSesion">Iniciar Sesión</a>
+                }
             </div>
         </div>
     </header>

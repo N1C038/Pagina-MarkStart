@@ -22,6 +22,7 @@ public class HomeController : Controller
 
     public IActionResult Index()
     { 
+        BD bd = new BD();
         var usuario = HttpContext.Session.GetString("Usuario");
         if (string.IsNullOrEmpty(usuario))
         {
@@ -30,7 +31,6 @@ public class HomeController : Controller
         }
         else
         {
-            BD bd = new BD();
             var idUsuarioSesion = HttpContext.Session.GetString("IdUsuario") ?? HttpContext.Session.GetString("Id");
             if (int.TryParse(idUsuarioSesion, out int idUsuario))
             {
@@ -62,19 +62,25 @@ public class HomeController : Controller
     {
         return View();
     }
-    public IActionResult Cursos()
+    public IActionResult Cursos(int IdStartup)
     {
         BD bd = new BD();
         List<Startup> startups = bd.obtenerStartupsUsuario(int.Parse(HttpContext.Session.GetString("IdUsuario") ?? "0"));
         if(startups.Count > 0)
         {
             ViewBag.Startups = startups;
-            List<Curso> cursos = bd.obtenerCursosStartup(startups[0].IdStartup);
-            ViewBag.Cursos = cursos;
+            if (IdStartup == 0)
+            {
+                IdStartup = startups[0].IdStartup;
+            }
+            List<Curso> cursosComprados = bd.obtenerCursosStartup(IdStartup);
+            List<Curso> cursosRecomendados = bd.obtener3Cursos();
+            ViewBag.CursosComprados = cursosComprados;
+            ViewBag.CursosRecomendados = cursosRecomendados;
         }
         else{
-            List<Curso> cursos = bd.obtener3Cursos();
-            ViewBag.Cursos = cursos;
+            List<Curso> cursosRecomendados = bd.obtener3Cursos();
+            ViewBag.CursosRecomendados = cursosRecomendados;
         }
         return View();     
     }

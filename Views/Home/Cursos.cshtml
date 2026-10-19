@@ -3,16 +3,47 @@
 }
 
 <div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="text-center mb-5">Nuestros Cursos</h1>
-        </div>
-    </div>
-
-    @if (Model != null && Model.Count > 0)
+    @if (ViewBag.CursosComprados != null && ViewBag.CursosComprados.Count > 0)
     {
+        <div class="dropdown-menu">
+            @foreach (var startup in ViewBag.Startups)
+            {
+                <a class="dropdown-item" href="@Url.Action("Cursos", "Home", new { IdStartup = startup.IdStartup })">@startup.Nombre</a>
+            }
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home")">Agrega una startup</a>
+        </div>
+        
+    
+        <h2 class="text-center mb-4">Tus Cursos</h2>
         <div class="row">
-            @foreach (var curso in Model)
+            @foreach (var curso in ViewBag.CursosComprados)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        @if (!string.IsNullOrEmpty(curso.FotoCurso))
+                        {
+                            <img src="/imagenes/@curso.FotoCurso" class="card-img-top" alt="@curso.Nombre" style="height: 250px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-secondary" style="height: 250px; display: flex; align-items: center; justify-content: center;">
+                                <span class="text-white">Sin imagen</span>
+                            </div>
+                        }
+                        <div class="card-footer bg-white">
+                            <a href="@Url.Action("Tareas", "Home", new { Id = curso.IdCurso })" class="btn btn-primary w-100">Entrar</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    @if (ViewBag.CursosRecomendados != null && ViewBag.CursosRecomendados.Count > 0)
+    {
+        <h2 class="text-center mb-4">Cursos Recomendados</h2>
+        <div class="row">
+            @foreach (var curso in ViewBag.CursosRecomendados)
             {
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
@@ -26,22 +57,6 @@
                                 <span class="text-white">Sin imagen</span>
                             </div>
                         }
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">@curso.Nombre</h5>
-                            <p class="card-text text-muted flex-grow-1">@curso.Descripcion</p>
-                            
-                            <div class="mt-3">
-                                <p class="mb-2">
-                                    <strong>Precio:</strong> $@curso.Precio
-                                </p>
-                                <p class="mb-2">
-                                    <strong>Cantidad de Tareas:</strong> @curso.CantTareas
-                                </p>
-                                <p class="text-secondary small">
-                                    <strong>ID:</strong> @curso.IdCurso
-                                </p>
-                            </div>
-                        </div>
                         <div class="card-footer bg-white">
                             <button class="btn btn-primary w-100">Ver Detalles</button>
                         </div>

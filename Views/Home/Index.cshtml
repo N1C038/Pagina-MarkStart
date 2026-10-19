@@ -13,7 +13,7 @@
             <div class="markstart-empty">
                 <h5 class="markstart-empty__title">No tienes cursos comprados</h5>
                 <div class="markstart-card markstart-card--empty">
-                    <a href="@Url.Action("Cursos", "Home")" class="markstart-btn">Comprar un Nuevo Curso</a>
+                    <a href="@Url.Action("Cursos", "Home", new { IdStartup = 0 })" class="markstart-btn">Comprar un Nuevo Curso</a>
                 </div>
             </div>
         }
@@ -99,7 +99,7 @@ else
 
    
 
-    <div class="markstart-review-gallery">
+    /*<div class="markstart-review-gallery">
         <h3>Algunas opiniones sobre MarkStart</h3>
         <div class="markstart-review-gallery__items">
             @foreach (var reseña in ViewBag.Reseñas)
@@ -111,6 +111,6 @@ else
                 </div>
             }
         </div>
-    </div>
+    </div>*/
 }
 

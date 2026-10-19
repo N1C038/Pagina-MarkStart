@@ -79,4 +79,35 @@ public class BD
             return connection.Query<Curso>(query).ToList();
         }
     }
+    public List<Curso> obtener3Cursos(){
+        List<Curso> cursos = new List<Curso>();
+        string query = "SELECT TOP 3 IdCurso, CantTareas, Precio, Nombre, Descripcion, FotoCurso FROM Cursos";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            cursos = connection.Query<Curso>(query).ToList();
+        }
+        return cursos;
+    }
+    public List<Startup> obtenerStartupsUsuario(int IdUsuario)
+    {
+        string query = @"SELECT s.IdStartup, s.Nombre, s.Problematica, s.NichoDeMercado, s.Producto
+                         FROM StartUps s
+                         INNER JOIN UsuariosXStartUp us ON s.IdStartup = us.IdStartup
+                         WHERE us.IdUsuario = @IdUsuario";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            return connection.Query<Startup>(query, new { IdUsuario = IdUsuario }).ToList();
+        }
+    }
+    public List<Curso> obtenerCursosStartup(int IdStartup)
+    {
+        string query = @"SELECT c.IdCurso, c.CantTareas, c.Precio, c.Nombre, c.Descripcion, c.FotoCurso
+                         FROM Cursos c
+                         INNER JOIN CursosComprados cc ON c.IdCurso = cc.IdCurso
+                         WHERE cc.IdStartup = @IdStartup";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            return connection.Query<Curso>(query, new { IdStartup = IdStartup }).ToList();
+        }
+    }
 }

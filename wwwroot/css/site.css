@@ -464,21 +464,173 @@ body {
         top: 50%;
     }
 }
-<<<<<<< HEAD
 /* Header / Registro styles */
 .page-header {
-  background: #bfe7ef;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-=======
+  width: 100%;
+  background: #9fd4e3;
+  border-bottom: 2px solid rgba(18, 63, 74, 0.9);
+  box-sizing: border-box;
+}
+
+.page-header .header-inner {
+  display: flex;
+  align-items: center;
+  min-height: 100px;
+  width: 100%;
+  padding: 0 1.2rem;
+  box-sizing: border-box;
+}
+
+.page-header .brand-block {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100px;
+  flex: 1 1 0;
+}
+
+.page-header .brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.page-header .brand-logo {
+  display: block;
+  height: 78px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.page-header .header-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.page-header .header-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  min-height: 46px;
+  padding: 0.45rem 0.8rem;
+  color: #0b2d35;
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: all 0.15s ease-in-out;
+}
+
+.page-header .header-link.active {
+  background: rgba(31, 77, 91, 0.88);
+  color: #edf7fa;
+  box-shadow: inset 0 0 0 1px rgba(13, 56, 71, 0.7);
+}
+
+.page-header .header-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 100px;
+  flex: 1 1 0;
+}
+
+.page-header .btn-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 170px;
+  min-height: 52px;
+  padding: 0.85rem 1.5rem;
+  background: #f3d15a;
+  color: #0b2d35;
+  border: 0;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1;
+  box-shadow: inset 0 -3px 0 rgba(0,0,0,0.08);
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.page-header .btn-login:hover {
+  color: #0b2d35;
+  text-decoration: none;
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+.page-header .user-block {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #0b2d35;
+}
+
+.page-header .user-avatar,
+.page-header .user-avatar--placeholder {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: rgba(11, 45, 53, 0.12);
+  border: 2px solid rgba(11, 45, 53, 0.7);
+}
+
+.page-header .user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0b2d35;
+}
+
+@media (max-width: 767.98px) {
+    .page-header .header-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem 1rem;
+    }
+
+    .page-header .brand-block,
+    .page-header .header-right {
+        justify-content: center;
+        min-height: auto;
+        flex: none;
+        width: 100%;
+    }
+
+    .page-header .brand {
+        justify-content: center;
+    }
+
+    .page-header .header-nav {
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .page-header .header-link {
+        min-width: 72px;
+    }
+
+    .page-header .btn-login {
+        min-width: 140px;
+    }
+}
+
 /* Registro */
 .registro-page {
     width: min(70.2vw, 1348px);
     margin: 28px auto 34px;
->>>>>>> b6822643cfe21ef7ccc0b605083a3c710a866ba7
 }
 
-<<<<<<< HEAD
 /* Form container spacing */
 .registro-container { margin-top: 24px; }
 
@@ -547,8 +699,7 @@ body {
     .markstart-course-gallery__items,
     .markstart-review-gallery__items {
         grid-template-columns: 1fr;
-    }
-=======
+    }}
 .registro-title {
     margin: 0 0 18px;
     text-align: center;
@@ -659,5 +810,4 @@ body {
         padding-right: 16px;
     }
 
->>>>>>> b6822643cfe21ef7ccc0b605083a3c710a866ba7
 }
