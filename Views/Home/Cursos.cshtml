@@ -13,28 +13,16 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home")">Agrega una startup</a>
         </div>
-        
-    
         <h2 class="text-center mb-4">Tus Cursos</h2>
-        <div class="row">
+        <div class="markstart-course-gallery__items">
             @foreach (var curso in ViewBag.CursosComprados)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        @if (!string.IsNullOrEmpty(curso.FotoCurso))
-                        {
-                            <img src="/imagenes/@curso.FotoCurso" class="card-img-top" alt="@curso.Nombre">
-                        }
-                        else
-                        {
-                            <div class="card-img-top bg-secondary" style="height: 250px; display: flex; align-items: center; justify-content: center;">
-                                <span class="text-white">Sin imagen</span>
-                            </div>
-                        }
-                        <div class="card-footer bg-white">
-                            <a href="@Url.Action("Tareas", "Home", new { Id = curso.IdCurso })" class="btn btn-primary w-100">Entrar</a>
-                        </div>
+                <div class="markstart-course-card">
+                    <div class="markstart-course-item">
+                        <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
+                        <a href="@Url.Action("DetallesCurso", "Home", new { Id = curso.IdCurso })" class="markstart-course-item__info">Más información</a>
                     </div>
+                    <h4>@curso.Nombre</h4>
                 </div>
             }
         </div>
@@ -42,25 +30,15 @@
     @if (ViewBag.CursosRecomendados != null && ViewBag.CursosRecomendados.Count > 0)
     {
         <h2 class="text-center mb-4">Cursos Recomendados</h2>
-        <div class="row">
+        <div class="markstart-course-gallery__items">
             @foreach (var curso in ViewBag.CursosRecomendados)
             {
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        @if (!string.IsNullOrEmpty(curso.FotoCurso))
-                        {
-                            <img src="/imagenes/@curso.FotoCurso" class="card-img-top" alt="@curso.Nombre">
-                        }
-                        else
-                        {
-                            <div class="card-img-top bg-secondary" style="height: 250px; display: flex; align-items: center; justify-content: center;">
-                                <span class="text-white">Sin imagen</span>
-                            </div>
-                        }
-                        <div class="card-footer bg-white">
-                            <button class="btn btn-primary w-100">Ver Detalles</button>
-                        </div>
+                <div class="markstart-course-card">
+                    <div class="markstart-course-item">
+                        <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
+                        <button class="markstart-course-item__info">Más información</button>
                     </div>
+                    <h4>@curso.Nombre</h4>
                 </div>
             }
         </div>
