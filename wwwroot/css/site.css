@@ -116,11 +116,11 @@ body {
 }
 
 .markstart-guest__title {
-    font-size: clamp(3.2rem, 3.8vw + 1.8rem, 6.1rem);
+    font-size: clamp(2.2rem, 2.2vw + 1rem, 4rem);
 }
 
 .markstart-guest__subtitle {
-    font-size: clamp(2.2rem, 2vw + 1.2rem, 4rem);
+    font-size: clamp(1.8rem, 1.5vw + 0.9rem, 2.8rem);
 }
 
 .markstart-guest__cta {
@@ -294,7 +294,7 @@ body {
 
 #carouselHero {
     position: relative;
-    border: 3px solid #1a8db7;
+    border: none;
     background: #edf5f7;
     min-height: 480px;
     overflow: hidden;
@@ -339,16 +339,17 @@ body {
     right: 0px;
     bottom: 0;
     width: min(320px, calc(100% - 26px));
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(159, 212, 227, 0.95);
     border: 2px solid rgba(0, 0, 0, 0.08);
     padding: 14px 16px 10px;
     box-shadow: 0 16px 28px rgba(15, 38, 52, 0.12);
     backdrop-filter: blur(2px);
+    text-align: center;
 }
 
 .hero-card h3 {
     margin: 0 0 8px;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "IBM Plex Serif", serif;
     font-size: clamp(1.15rem, 0.8vw + 0.7rem, 1.85rem);
     line-height: 1.1;
     color: #111;
@@ -362,10 +363,14 @@ body {
 }
 
 .hero-card .markstart-btn {
+    display: inline-flex;
     min-width: 120px;
     min-height: 34px;
     padding: 8px 14px;
     font-size: 0.82rem;
+    background: #2e92ab;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    margin: 0 auto;
 }
 
 .hero-arrow {
@@ -392,30 +397,11 @@ body {
 .hero-arrow .carousel-control-next-icon {
     width: 32px;
     height: 32px;
-    filter: invert(1) brightness(0.2);
+    filter: brightness(0) invert(1);
 }
 
 .hero-dots {
-    position: absolute;
-    right: 38px;
-    bottom: 12px;
-    left: auto;
-    margin: 0;
-    width: auto;
-    z-index: 4;
-}
-
-.hero-dots [data-bs-target] {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.4);
-    border: 0;
-    margin: 0 5px;
-}
-
-.hero-dots .active {
-    background-color: #0c7da9;
+    display: none;
 }
 
 @media (max-width: 900px) {
@@ -653,51 +639,74 @@ body {
 .markstart-course-gallery h3,
 .markstart-review-gallery h3 {
     margin: 0 0 18px;
-    text-align: center;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(2rem, 2vw + 1rem, 3rem);
-    font-weight: 700;
+    text-align: left;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(1.5rem, 1vw + 0.9rem, 2.2rem);
+    font-weight: 400;
     color: var(--markstart-text);
 }
 
 .markstart-course-gallery__items,
 .markstart-review-gallery__items {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 26px;
+}
+
+.markstart-course-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.markstart-course-card h4 {
+    margin: 10px 0 0;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(1.1rem, 0.9vw + 0.7rem, 1.8rem);
+    text-align: left;
+    font-weight: 400;
+    color: var(--markstart-text);
 }
 
 .markstart-course-item,
 .markstart-review-item {
     position: relative;
     overflow: hidden;
-    border: 3px solid #1a8db7;
+    border: none;
     background: #fff;
-    min-height: 250px;
+    min-height: 290px;
 }
 
 .markstart-course-item img,
 .markstart-review-item img {
     display: block;
     width: 100%;
-    height: 250px;
+    height: 290px;
     object-fit: cover;
 }
 
 .markstart-course-item__info,
 .markstart-review-item__info {
     position: absolute;
-    right: 12px;
-    bottom: 12px;
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(17, 17, 17, 0.12);
-    color: #111;
-    font-size: 0.8rem;
-    font-weight: 600;
+    right: 0;
+    bottom: 0;
+    background: #2e92ab;
+    border: 0;
+    color: #fff;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 400;
     line-height: 1.2;
-    padding: 7px 12px;
-    box-shadow: 0 8px 18px rgba(15, 38, 52, 0.12);
+    padding: 8px 14px;
+    min-width: 120px;
+    min-height: 34px;
+    box-shadow: none;
     cursor: pointer;
+}
+
+.markstart-course-item__info:hover,
+.markstart-review-item__info:hover {
+    filter: brightness(1.05);
 }
 
 @media (max-width: 900px) {
