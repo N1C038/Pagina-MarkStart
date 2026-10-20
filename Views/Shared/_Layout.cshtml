@@ -52,42 +52,36 @@
             </div>
         </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div class="page-main">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
     </div>
 
-    <footer class="site-footer border-top">
-        <div class="footer-inner container-fluid">
-            <div class="footer-row d-flex align-items-start">
-                <div class="footer-left">
-                    <div class="brand">MarkStart</div>
-                </div>
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand" aria-label="MarkStart"></div>
 
-                <div class="footer-middle">
-                    <h5>Links:</h5>
-                    <ul class="footer-links list-unstyled">
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Cursos</a></li>
-                    </ul>
-                </div>
+            <div class="footer-section">
+                <h5>Links:</h5>
+                <ul class="footer-links list-unstyled">
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Cursos">Cursos</a></li>
+                </ul>
+            </div>
 
-                <div class="footer-right">
-                    <h5>Contacto:</h5>
-                    <ul class="contact-list list-unstyled">
-                        <li>info@markstart.com.ar</li>
-                        <li>+54 9 11 1234-5678</li>
-                        <li>Buenos Aires, Argentina</li>
-                    </ul>
-                    <div class="social-icons">
-                        <a href="#" aria-label="Instagram">IG</a>
-                        <a href="#" aria-label="TikTok">TT</a>
-                        <a href="#" aria-label="LinkedIn">IN</a>
-                    </div>
-                </div>
+            <div class="footer-section">
+                <h5>Contacto:</h5>
+                <ul class="contact-list list-unstyled">
+                    <li>info@markstart.com.ar</li>
+                    <li>+54 9 11 1234-5678</li>
+                    <li>Buenos Aires, Argentina</li>
+                </ul>
             </div>
         </div>
     </footer>
