@@ -12,9 +12,7 @@
         {
             <div class="markstart-empty">
                 <h5 class="markstart-empty__title">No tienes cursos comprados</h5>
-                <div class="markstart-card markstart-card--empty">
-                    <a href="@Url.Action("Cursos", "Home", new { IdStartup = 0 })" class="markstart-btn">Comprar un Nuevo Curso</a>
-                </div>
+                <a href="@Url.Action("Cursos", "Home", new { IdStartup = 0 })" class="markstart-btn">Comprar un Nuevo Curso</a>
             </div>
         }
         else
@@ -65,8 +63,6 @@ else
                             </div>
                         </div>
                     </div>
-
-                   
                 </div>
 
                 <button class="carousel-control-prev hero-arrow hero-arrow--prev" type="button" data-bs-target="#carouselHero" data-bs-slide="prev" aria-label="Anterior">
@@ -89,7 +85,7 @@ else
         @foreach (var curso in ViewBag.Cursos)
         {
              <div class="markstart-course-item">
-                <img src="@curso.Imagen" alt="@curso.Nombre">
+                <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
                 <button class="markstart-course-item__info">Más información</button>
             </div>
             <h4>@curso.Nombre</h4>
