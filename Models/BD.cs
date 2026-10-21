@@ -26,58 +26,73 @@ public class BD
 
     public Usuario encontrarUsuario(string Email, string Contraseña)
     {
+        Usuario usuario = new Usuario();
         string query = @"SELECT IdUsuario, Email, Nombre, EsAdmin, Apellido, Telefono, FotoPerfil, Contraseña
                          FROM Usuarios
                          WHERE Email = @Email AND Contraseña = @Contraseña";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            return connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email, Contraseña = Contraseña });
+            usuario = connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email, Contraseña = Contraseña });
         }
+        return usuario;
     }
 
     public Usuario buscarUsuarioPorEmail(string Email)
     {
+        Usuario usuario = new Usuario();
         string query = @"SELECT IdUsuario, Email, Nombre, EsAdmin, Apellido, Telefono, FotoPerfil, Contraseña
                          FROM Usuarios
                          WHERE Email = @Email";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            return connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email });
+            usuario = connection.QueryFirstOrDefault<Usuario>(query, new { Email = Email });
         }
+        return usuario;
     }
     public Dictionary<Curso, Tarea> buscarCursosYTareasUsuario(int IdUsuario){
         Dictionary<Curso, Tarea> cursosYTareas = new Dictionary<Curso, Tarea>();
-        string query = @"SELECT c.IdCurso, c.CantTareas, c.Precio, c.Nombre, c.Descripcion, c.FotoCurso,
-                               t.IdTarea, t.Nombre, t.Explicacion, t.FotoTip, t.Tip, t.IdCurso 
-                        FROM Usuarios u 
-                        INNER JOIN UsuariosXStartUp us ON u.IdUsuario = us.IdUsuario 
-                        INNER JOIN StartUps s ON us.IdStartup = s.IdStartup 
-                        INNER JOIN CursosComprados cc ON s.IdStartup = cc.IdStartup 
-                        INNER JOIN Cursos c ON cc.IdCurso = c.IdCurso 
-                        INNER JOIN Tareas t ON c.IdCurso = t.IdCurso
-                        WHERE u.IdUsuario = @IdUsuario AND t.IdTarea = cc.CantCompletadas + 1";
+         string query = @"WITH TareasOrdenadas AS (
+                    SELECT t.IdTarea, t.Nombre, t.Explicacion, t.FotoTip, t.Tip, t.IdCurso,
+                        ROW_NUMBER() OVER (PARTITION BY t.IdCurso ORDER BY t.IdTarea) AS NumeroTarea
+                    FROM Tareas t
+                   )
+                   SELECT c.IdCurso, c.CantTareas, c.Precio, c.Nombre, c.Descripcion, c.FotoCurso,
+                       t.IdTarea, t.Nombre, t.Explicacion, t.FotoTip, t.Tip, t.IdCurso
+                   FROM Usuarios u
+                   INNER JOIN UsuariosXStartUp us ON u.IdUsuario = us.IdUsuario
+                   INNER JOIN StartUps s ON us.IdStartup = s.IdStartup
+                   INNER JOIN CursosComprados cc ON s.IdStartup = cc.IdStartup
+                   INNER JOIN Cursos c ON cc.IdCurso = c.IdCurso
+                   LEFT JOIN TareasOrdenadas t ON c.IdCurso = t.IdCurso AND t.NumeroTarea = cc.CantCompletadas + 1
+                   WHERE u.IdUsuario = @IdUsuario";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
             var result = connection.Query<Curso, Tarea, (Curso curso, Tarea tarea)>(query,
                 (curso, tarea) => (curso, tarea),
                 new { IdUsuario = IdUsuario },
                 splitOn: "IdTarea");
-
            
             foreach (var item in result)
             {
-                cursosYTareas.Add(item.curso, item.tarea);
+                Tarea tarea = item.tarea;
+                if (tarea != null && tarea.IdTarea == 0)
+                {
+                    tarea = null;
+                }
+                cursosYTareas.Add(item.curso, tarea);
             }
         }
         return cursosYTareas;
     }
     public List<Curso> obtenerCursos()
     {
+        List<Curso> cursos = new List<Curso>();
         string query = "SELECT IdCurso, CantTareas, Precio, Nombre, Descripcion, FotoCurso FROM Cursos";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            return connection.Query<Curso>(query).ToList();
+            cursos = connection.Query<Curso>(query).ToList();
         }
+        return cursos;
     }
     public List<Curso> obtener3Cursos(){
         List<Curso> cursos = new List<Curso>();
@@ -101,13 +116,15 @@ public class BD
     }
     public List<Curso> obtenerCursosStartup(int IdStartup)
     {
+        List<Curso> cursos = new List<Curso>();
         string query = @"SELECT c.IdCurso, c.CantTareas, c.Precio, c.Nombre, c.Descripcion, c.FotoCurso
                          FROM Cursos c
                          INNER JOIN CursosComprados cc ON c.IdCurso = cc.IdCurso
                          WHERE cc.IdStartup = @IdStartup";
         using (SqlConnection connection = new SqlConnection(conexion))
         {
-            return connection.Query<Curso>(query, new { IdStartup = IdStartup }).ToList();
+            cursos = connection.Query<Curso>(query, new { IdStartup = IdStartup }).ToList();
         }
+        return cursos;
     }
 }

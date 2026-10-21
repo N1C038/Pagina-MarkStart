@@ -314,6 +314,8 @@ body {
 .markstart-empty {
     text-align: center;
     margin-top: 24px;
+    background-color: #97CFDD;
+    padding: 2%;
 }
 
 .markstart-empty__title {
@@ -369,12 +371,12 @@ body {
     background-position: center;
 }
 
-/*.hero-slide::before {
+.hero-slide::before {
     content: "";
     position: absolute;
     inset: 0;
     background: rgba(5, 14, 24, 0.08);
-}*/
+}
 
 .hero-slide--marketing {
     background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1400&q=80');
@@ -743,6 +745,9 @@ body {
     position: absolute;
     right: 0;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: #2e92ab;
     border: 0;
     color: #fff;
@@ -753,13 +758,24 @@ body {
     padding: 8px 14px;
     min-width: 120px;
     min-height: 34px;
+    max-width: 100%;
     box-shadow: none;
     cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.markstart-course-item__info a,
+.markstart-review-item__info a,
+.markstart-course-item__info,
+.markstart-review-item__info {
+    text-decoration: none;
 }
 
 .markstart-course-item__info:hover,
 .markstart-review-item__info:hover {
     filter: brightness(1.05);
+    text-decoration: none;
 }
 
 @media (max-width: 900px) {
@@ -771,7 +787,28 @@ body {
     .markstart-course-gallery__items,
     .markstart-review-gallery__items {
         grid-template-columns: 1fr;
-    }}
+    }
+
+    .markstart-course-item,
+    .markstart-review-item {
+        min-height: 220px;
+    }
+
+    .markstart-course-item img,
+    .markstart-review-item img {
+        height: 220px;
+    }
+
+    .markstart-course-item__info,
+    .markstart-review-item__info {
+        width: 100%;
+        min-width: 0;
+        right: 0;
+        left: 0;
+        padding-inline: 12px;
+        font-size: 0.76rem;
+    }
+}
 .registro-title {
     margin: 0 0 18px;
     text-align: center;
@@ -1035,6 +1072,7 @@ body {
     .markstart-cursos-toolbar {
         display: flex;
         justify-content: flex-end;
+        align-items: center;
         width: 100%;
         margin-bottom: 1.5rem;
     }

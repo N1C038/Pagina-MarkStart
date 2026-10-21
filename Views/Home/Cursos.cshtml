@@ -6,6 +6,7 @@
     @if (ViewBag.Startups != null && ViewBag.Startups.Count > 0)
     {
         <div class="markstart-cursos-toolbar">
+        <h5 class="markstart-cursos-label">Seleccionar Startup: </h5>
             <div class="dropdown">
                 <button class="btn markstart-cursos-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     @(ViewBag.NombreStartup ?? "Seleccionar startup")
@@ -51,7 +52,7 @@
                 <div class="markstart-course-card">
                     <div class="markstart-course-item">
                         <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
-                        <button class="markstart-course-item__info">Más información</button>
+                        <a href="@Url.Action("DetalleCurso", "Home", new { id = curso.IdCurso })" class="markstart-course-item__info">Más información</a>
                     </div>
                     <h4>@curso.Nombre</h4>
                 </div>
