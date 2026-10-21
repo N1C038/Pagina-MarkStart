@@ -72,6 +72,10 @@ public class HomeController : Controller
             if (IdStartup == 0)
             {
                 IdStartup = startups[0].IdStartup;
+                ViewBag.NombreStartup = startups[0].Nombre;
+            }
+            else{
+                ViewBag.NombreStartup = startups[IdStartup - 1].Nombre;
             }
             List<Curso> cursosComprados = bd.obtenerCursosStartup(IdStartup);
             List<Curso> cursosRecomendados = bd.obtener3Cursos();

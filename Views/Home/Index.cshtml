@@ -19,12 +19,16 @@
         {
             @foreach (KeyValuePair<Curso, Tarea> curso in ViewBag.Cursos)
             {
+                <h5 class="markstart-card__title">@curso.Key.Nombre</h5>
                 <div class="markstart-card">
-                    <h5 class="markstart-card__title">@curso.Key.Nombre</h5>
                     <div class="markstart-card__body">
-                        <h6>@curso.Value.Nombre</h6>
-                        <p>@curso.Value.Explicacion</p>
-                        <a href="@Url.Action("Tareas", "Home", new {Id = curso.Key.IdCurso })" class="markstart-btn">Hacer Tareas</a>
+                        <div class="markstart-card__content">
+                            <h6>@curso.Value.Nombre</h6>
+                            <p>@curso.Value.Explicacion</p>
+                        </div>
+                        <div class="markstart-card__action">
+                            <a href="@Url.Action("Tareas", "Home", new {Id = curso.Key.IdCurso })" class="markstart-btn">Hacer Tareas</a>
+                        </div>
                     </div>
                 </div>
             }

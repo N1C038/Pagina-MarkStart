@@ -2,25 +2,40 @@
     ViewData["Title"] = "Cursos";
 }
 
-<div class="container mt-5">
+<div class="container mt-5 markstart-cursos-page">
+    @if (ViewBag.Startups != null && ViewBag.Startups.Count > 0)
+    {
+        <div class="markstart-cursos-toolbar">
+            <div class="dropdown">
+                <button class="btn markstart-cursos-dropdown dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    @(ViewBag.NombreStartup ?? "Seleccionar startup")
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @foreach (var startup in ViewBag.Startups)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action("Cursos", "Home", new { IdStartup = startup.IdStartup })">@startup.Nombre</a>
+                        </li>
+                    }
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })">Agregar una Startup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+
     @if (ViewBag.CursosComprados != null && ViewBag.CursosComprados.Count > 0)
     {
-        <div class="dropdown-menu">
-            @foreach (var startup in ViewBag.Startups)
-            {
-                <a class="dropdown-item" href="@Url.Action("Cursos", "Home", new { IdStartup = startup.IdStartup })">@startup.Nombre</a>
-            }
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home")">Agrega una startup</a>
-        </div>
-        <h2 class="text-center mb-4">Tus Cursos</h2>
+        <h2 class="markstart-cursos-section__title">Tus Cursos</h2>
         <div class="markstart-course-gallery__items">
             @foreach (var curso in ViewBag.CursosComprados)
             {
                 <div class="markstart-course-card">
                     <div class="markstart-course-item">
                         <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
-                        <a href="@Url.Action("DetallesCurso", "Home", new { Id = curso.IdCurso })" class="markstart-course-item__info">Más información</a>
+                        <a href="@Url.Action("Tareas", "Home", new { Id = curso.IdCurso })" class="markstart-course-item__info">Entrar</a>
                     </div>
                     <h4>@curso.Nombre</h4>
                 </div>
@@ -29,7 +44,7 @@
     }
     @if (ViewBag.CursosRecomendados != null && ViewBag.CursosRecomendados.Count > 0)
     {
-        <h2 class="text-center mb-4">Cursos Recomendados</h2>
+        <h2 class="markstart-cursos-section__title markstart-cursos-section__title--spaced">Cursos Recomendados</h2>
         <div class="markstart-course-gallery__items">
             @foreach (var curso in ViewBag.CursosRecomendados)
             {
@@ -52,22 +67,4 @@
     }
 </div>
 
-<style>
-    .card {
-        transition: transform 0.2s, box-shadow 0.2s;
-    }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2) !important;
-    }
-
-    .card-title {
-        color: #333;
-        font-weight: 600;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
-</style>
