@@ -13,7 +13,7 @@
         <div class="alert alert-danger registro-alert">@ViewBag.Error</div>
     }
 
-    <form class="registro-card" action="@Url.Action("Registro", "Home")" method="post" enctype="multipart/form-data">
+    <form id="registroForm" class="registro-card" action="@Url.Action("Registro", "Home")" method="post" onsubmit="return validarRegistro();">
 
         <div class="registro-field">
             <label class="form-label">Nombre</label>
@@ -27,12 +27,12 @@
 
         <div class="registro-field">
             <label class="form-label">Email</label>
-            <input type="email" class="form-control" name="Email" placeholder="MateoFernandez@gmail.com" />
+            <input id="Email" type="email" class="form-control" name="Email" placeholder="MateoFernandez@gmail.com" />
         </div>
 
         <div class="registro-field">
             <label class="form-label">Teléfono</label>
-            <input type="text" class="form-control" name="Telefono" placeholder="+54 9 11 1234-5678" />
+            <input id="Telefono" type="text" class="form-control" name="Telefono" placeholder="1123456789" />
         </div>
 
         <div class="registro-field">
@@ -40,13 +40,32 @@
             <input type="password" class="form-control" name="Contraseña" placeholder="..............." />
         </div>
 
-        <div class="registro-field">
-            <label class="form-label" for="FotoPerfil">Foto de Perfil</label>
-            <input type="file" class="registro-file-input" name="FotoPerfil" id="FotoPerfil" />
-            <label class="registro-file-button" for="FotoPerfil">+</label>
-        </div>
-
         <input type="submit" class="registro-submit" value="Registrarse" />
     </form>
+
+    <script>
+        function validarRegistro() {
+            var email = document.getElementById("Email").value;
+            var telefono = document.getElementById("Telefono").value;
+            var hayArroba = false;
+
+            for (var i = 0; i < email.length; i++) {
+                if (email[i] == "@@") {
+                    hayArroba = true;
+                }
+            }
+
+            if (!hayArroba) {
+                return false;
+            }
+
+            for (var i = 0; i < telefono.length; i++) {
+                if (telefono[i] < "0" || telefono[i] > "9") {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
 </section>
-        

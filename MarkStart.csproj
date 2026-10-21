@@ -11,4 +11,10 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Pagina-MarkStart/**/*.cs" />
+    <Content Remove="Pagina-MarkStart/**/*" />
+    <None Remove="Pagina-MarkStart/**/*" />
+  </ItemGroup>
+
 </Project>

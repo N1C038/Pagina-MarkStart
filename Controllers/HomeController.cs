@@ -92,6 +92,19 @@ public class HomeController : Controller
     public IActionResult Registro(string Nombre, string Apellido, string Contraseña, string Email, string Telefono, IFormFile FotoPerfil)
     {
         BD bd = new BD();
+
+        if (string.IsNullOrWhiteSpace(Email) || !Email.Contains("@"))
+        {
+            ViewBag.Error = "El email debe contener @.";
+            return View("Registro");
+        }
+
+        if (!string.IsNullOrWhiteSpace(Telefono) && Telefono.Any(ch => !char.IsDigit(ch)))
+        {
+            ViewBag.Error = "El teléfono solo puede contener números.";
+            return View("Registro");
+        }
+
         string fotoRuta = "imagenes/default-user.svg";
         if (FotoPerfil != null && FotoPerfil.Length > 0)
         {
