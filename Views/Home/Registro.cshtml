@@ -13,31 +13,35 @@
         <div class="alert alert-danger registro-alert">@ViewBag.Error</div>
     }
 
-    <form id="registroForm" class="registro-card" action="@Url.Action("Registro", "Home")" method="post" onsubmit="return validarRegistro();">
+    <form id="registroForm" class="registro-card" asp-controller="Home" asp-action="Registro" method="post" onsubmit="return validarRegistro();">
 
+        <p id="mensajeErrorRegistro" class="alert alert-danger d-none" role="alert"></p>
+        <a href="/signin-google" class="google-auth-btn">
+            Registrarse con Google
+        </a>
         <div class="registro-field">
             <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" name="Nombre" placeholder="Mateo" />
+            <input type="text" class="form-control" name="Nombre" placeholder="Mateo" required/>
         </div>
 
         <div class="registro-field">
             <label class="form-label">Apellido</label>
-            <input type="text" class="form-control" name="Apellido" placeholder="Fernández" />
+            <input type="text" class="form-control" name="Apellido" placeholder="Fernández" required/>
         </div>
 
         <div class="registro-field">
             <label class="form-label">Email</label>
-            <input id="Email" type="email" class="form-control" name="Email" placeholder="MateoFernandez@gmail.com" />
+            <input id="Email" type="email" class="form-control" name="Email" placeholder="MateoFernandez@gmail.com" required/>
         </div>
 
         <div class="registro-field">
             <label class="form-label">Teléfono</label>
-            <input id="Telefono" type="text" class="form-control" name="Telefono" placeholder="1123456789" />
+            <input id="Telefono" type="text" class="form-control" name="Telefono" placeholder="1123456789" required/>
         </div>
 
         <div class="registro-field">
             <label class="form-label">Contraseña</label>
-            <input type="password" class="form-control" name="Contraseña" placeholder="..............." />
+            <input type="password" class="form-control" name="Contraseña" placeholder="..............." required/>
         </div>
 
         <input type="submit" class="registro-submit" value="Registrarse" />
@@ -45,24 +49,28 @@
 
     <script>
         function validarRegistro() {
-            var email = document.getElementById("Email").value;
-            var telefono = document.getElementById("Telefono").value;
-            var hayArroba = false;
+            var email = document.getElementById("Email").value.trim();
+            var telefono = document.getElementById("Telefono").value.trim();
+            var errorBox = document.getElementById("mensajeErrorRegistro");
+            errorBox.innerText = "";
 
-            for (var i = 0; i < email.length; i++) {
-                if (email[i] == "@@") {
-                    hayArroba = true;
-                }
+            if (email === "") {
+                errorBox.innerText += "Error: el email no puede estar vacío.";
+                errorBox.classList.remove("d-none");
             }
 
-            if (!hayArroba) {
+            if (!email.includes("@@")) {
+                errorBox.innerText += "Error: el email debe incluir @@.";
+                errorBox.classList.remove("d-none");
+            }
+
+            if (telefono !== "" && !/^\d+$/.test(telefono)) {
+                errorBox.innerText += " Error: el teléfono solo puede contener números.";
+                errorBox.classList.remove("d-none");
+            }
+
+            if (errorBox.innerText !== "") {
                 return false;
-            }
-
-            for (var i = 0; i < telefono.length; i++) {
-                if (telefono[i] < "0" || telefono[i] > "9") {
-                    return false;
-                }
             }
 
             return true;

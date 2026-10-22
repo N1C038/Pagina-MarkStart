@@ -127,4 +127,21 @@ public class BD
         }
         return cursos;
     }
+
+    public List<Reseña> obtener3Reseñas()
+    {
+        List<Reseña> reseñas = new List<Reseña>();
+        string query = @"SELECT TOP 3 r.IdReseña,
+                                 u.Nombre,
+                                 r.Texto AS Texto,
+                                 u.FotoPerfil AS Imagen
+                         FROM Reseñas r
+                         INNER JOIN Usuarios u ON r.IdUsuario = u.IdUsuario
+                         ORDER BY r.Calificacion DESC";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            reseñas = connection.Query<Reseña>(query).ToList();
+        }
+        return reseñas;
+    }
 }

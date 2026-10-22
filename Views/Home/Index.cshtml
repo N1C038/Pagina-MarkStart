@@ -110,20 +110,26 @@ else
         </div>
     </div>
 
-   
-
-    /*<div class="markstart-review-gallery">
+    <div class="markstart-review-gallery">
         <h3>Algunas opiniones sobre MarkStart</h3>
         <div class="markstart-review-gallery__items">
             @foreach (var reseña in ViewBag.Reseñas)
             {
-                <div class="markstart-review-item">
-                    <img src="@reseña.Imagen" alt="@reseña.Nombre">
-                    <h5>@reseña.Texto</h5>
-                    <button class="markstart-review-item__info">Más información</button>
-                </div>
+                <article class="markstart-review-item">
+                    <div class="markstart-review-item__header">
+                        <h4>@reseña.Nombre</h4>
+                    </div>
+                    <div class="markstart-review-item__body">
+                        <div class="markstart-review-item__photo">
+                            <img src="/imagenes/@reseña.Imagen" alt="@reseña.Nombre">
+                        </div>
+                        <div class="markstart-review-item__quote">
+                            <p>@reseña.Texto</p>
+                        </div>
+                    </div>
+                </article>
             }
         </div>
-    </div>*/
+    </div>
 }
 

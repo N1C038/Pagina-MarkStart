@@ -1,12 +1,14 @@
 using System.Diagnostics;
 using System;
 using System.IO;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using MarkStart.Models;
-using Microsoft.Data.SqlClient;
-using Dapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 namespace MarkStart.Controllers;
 
 public class HomeController : Controller
@@ -20,6 +22,81 @@ public class HomeController : Controller
         _env = env;
     }
 
+    private void IniciarSesion(Usuario usuario)
+    {
+        HttpContext.Session.SetString("Usuario", usuario.Nombre);
+        HttpContext.Session.SetString("IdUsuario", usuario.IdUsuario.ToString());
+
+        if (!string.IsNullOrEmpty(usuario.Nombre))
+            HttpContext.Session.SetString("Nombre", usuario.Nombre);
+        if (!string.IsNullOrEmpty(usuario.FotoPerfil))
+            HttpContext.Session.SetString("FotoPerfil", usuario.FotoPerfil);
+    }
+
+    [HttpGet("signin-google")]
+    public IActionResult GoogleLogin()
+    {
+        var redirectUrl = Url.Action(nameof(GoogleResponse), "Home");
+        var properties = new AuthenticationProperties { RedirectUri = redirectUrl };
+        return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+    }
+
+    [HttpGet("signin-google-callback")]
+    public async Task<IActionResult> GoogleResponse()
+    {
+        var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        if (!result.Succeeded || result.Principal == null)
+        {
+            ViewBag.Error = "No se pudo iniciar sesión con Google.";
+            return View("InicioSesion");
+        }
+
+        var claims = result.Principal.Claims.ToList();
+        var email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value
+            ?? claims.FirstOrDefault(c => c.Type == "email")?.Value;
+        var nombre = claims.FirstOrDefault(c => c.Type == ClaimTypes.GivenName)?.Value
+            ?? claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value
+            ?? (email != null ? email.Split('@')[0] : "UsuarioGoogle");
+        var apellido = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value ?? "";
+        var foto = claims.FirstOrDefault(c => c.Type == "picture")?.Value ?? "imagenes/default-user.svg";
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            ViewBag.Error = "No se pudo obtener el email de Google.";
+            return View("InicioSesion");
+        }
+
+        BD bd = new BD();
+        Usuario usuarioExistente = bd.buscarUsuarioPorEmail(email);
+
+        if (usuarioExistente == null)
+        {
+            string contraseñaTemporal = "Google_" + Guid.NewGuid().ToString("N")[..12];
+            Usuario nuevoUsuario = new Usuario
+            {
+                Email = email,
+                Nombre = nombre,
+                Apellido = apellido,
+                Telefono = "",
+                FotoPerfil = foto,
+                Contraseña = contraseñaTemporal,
+                EsAdmin = false
+            };
+            bd.agregarUsuario(nuevoUsuario);
+            usuarioExistente = bd.encontrarUsuario(email, contraseñaTemporal) ?? bd.buscarUsuarioPorEmail(email);
+        }
+
+        if (usuarioExistente == null)
+        {
+            ViewBag.Error = "No se pudo crear el usuario con Google.";
+            return View("InicioSesion");
+        }
+
+        IniciarSesion(usuarioExistente);
+        return RedirectToAction("Index", "Home");
+    }
+
     public IActionResult Index()
     { 
         BD bd = new BD();
@@ -28,6 +105,7 @@ public class HomeController : Controller
         {
             usuario = "";
             ViewBag.Cursos = bd.obtener3Cursos();
+            ViewBag.Reseñas = bd.obtener3Reseñas();
         }
         else
         {
@@ -151,13 +229,7 @@ public class HomeController : Controller
             return View();
         }
 
-        HttpContext.Session.SetString("Usuario", usuarioEncontrado.Nombre);
-        HttpContext.Session.SetString("IdUsuario", usuarioEncontrado.IdUsuario.ToString());
-
-        if (!string.IsNullOrEmpty(usuarioEncontrado.Nombre))
-            HttpContext.Session.SetString("Nombre", usuarioEncontrado.Nombre);
-        if (!string.IsNullOrEmpty(usuarioEncontrado.FotoPerfil))
-            HttpContext.Session.SetString("FotoPerfil", usuarioEncontrado.FotoPerfil);
+        IniciarSesion(usuarioEncontrado);
 
         return RedirectToAction("Index", "Home");
     }
