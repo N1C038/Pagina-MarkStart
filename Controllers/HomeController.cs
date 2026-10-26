@@ -59,7 +59,7 @@ public class HomeController : Controller
             ?? claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value
             ?? (email != null ? email.Split('@')[0] : "UsuarioGoogle");
         var apellido = claims.FirstOrDefault(c => c.Type == ClaimTypes.Surname)?.Value ?? "";
-        var foto = claims.FirstOrDefault(c => c.Type == "picture")?.Value ?? "imagenes/default-user.svg";
+        var foto = claims.FirstOrDefault(c => c.Type == "picture")?.Value ?? "imagenes/default-user.png";
 
         if (string.IsNullOrWhiteSpace(email))
         {
@@ -119,7 +119,13 @@ public class HomeController : Controller
         ViewBag.Usuario = usuario;
         return View();
     }
-
+    public IActionResult PerfilUsuario(int IdUsuario){
+        return RedirectToAction("CerrarSesion");
+    }
+    public IActionResult CerrarSesion(){
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index");
+    }
     public IActionResult Privacy()
     {
         return View();
@@ -171,19 +177,7 @@ public class HomeController : Controller
     {
         BD bd = new BD();
 
-        if (string.IsNullOrWhiteSpace(Email) || !Email.Contains("@"))
-        {
-            ViewBag.Error = "El email debe contener @.";
-            return View("Registro");
-        }
-
-        if (!string.IsNullOrWhiteSpace(Telefono) && Telefono.Any(ch => !char.IsDigit(ch)))
-        {
-            ViewBag.Error = "El teléfono solo puede contener números.";
-            return View("Registro");
-        }
-
-        string fotoRuta = "imagenes/default-user.svg";
+        string fotoRuta = "imagenes/default-user.png";
         if (FotoPerfil != null && FotoPerfil.Length > 0)
         {
             string carpeta = Path.Combine(_env.WebRootPath ?? "wwwroot", "imagenes");
@@ -232,11 +226,5 @@ public class HomeController : Controller
         IniciarSesion(usuarioEncontrado);
 
         return RedirectToAction("Index", "Home");
-    }
-    public IActionResult PasarCursos()
-    {
-        BD bd = new BD();
-        List<Curso> cursos = bd.obtenerCursos();
-        return View(cursos);
     }
 }

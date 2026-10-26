@@ -35,17 +35,20 @@
                     var usuario = Context.Session.GetString("Usuario");
                     var nombre = Context.Session.GetString("Nombre");
                     var foto = Context.Session.GetString("FotoPerfil");
+                    var idUsuario = Context.Session.GetString("IdUsuario");
 
                     <div class="user-block">
-                        @if (!string.IsNullOrEmpty(foto))
-                        {
-                            <img src="@Url.Content("~/" + foto)" alt="FotoPerfil" class="user-avatar" />
-                        }
-                        else
-                        {
-                            <div class="user-avatar user-avatar--placeholder"></div>
-                        }
-                        <div class="user-name">@(!string.IsNullOrEmpty(nombre) ? nombre : usuario)</div>
+                        <a href="@Url.Action("PerfilUsuario", "Home", new { IdUsuario = int.Parse(idUsuario) })" class="user-link">
+                            @if (!string.IsNullOrEmpty(foto))
+                            {
+                                <img src="@Url.Content("/imagenes/" + foto)" alt="FotoPerfil" class="user-avatar" />
+                            }
+                            else
+                            {
+                                <div class="user-avatar user-avatar--placeholder"></div>
+                            }
+                            <div class="user-name">@(!string.IsNullOrEmpty(nombre) ? nombre : usuario)</div>
+                        </a>
                     </div>
                 }
                 else
