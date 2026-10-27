@@ -148,6 +148,9 @@ public class HomeController : Controller
     }
     public IActionResult Cursos(int IdStartup)
     {
+        if(string.IsNullOrEmpty(HttpContext.Session.GetString("IdUsuario"))){
+            return RedirectToAction("Index");
+        }
         BD bd = new BD();
         List<Startup> startups = bd.obtenerStartupsUsuario(int.Parse(HttpContext.Session.GetString("IdUsuario") ?? "0"));
         if(startups.Count > 0)
