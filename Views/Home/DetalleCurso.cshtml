@@ -3,42 +3,91 @@
 }
 
 <div class="container mt-5">
-    <h1>@ViewBag.NombreCurso</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <img src="/images/@ViewBag.ImagenCurso" class="img-fluid" alt="@ViewBag.NombreCurso">
+    <div class="markstart-course-detail">
+        <h1 class="markstart-course-detail__title">@ViewBag.NombreCurso</h1>
+
+        <div class="markstart-course-detail__hero">
+            <div class="markstart-course-detail__media">
+                <img src="/imagenes/@ViewBag.FotoCurso" alt="@ViewBag.NombreCurso">
+            </div>
+
+            <div class="markstart-course-detail__summary">
+                <p>@ViewBag.DescripcionCurso</p>
+            </div>
         </div>
-        <div class="col-md-6">
-            <p>@ViewBag.DescripcionCurso</p>
+
+        <div class="markstart-course-detail__cta-row">
+            <a href="@Url.Action("AsignarCurso", "Home", new { IdCurso = ViewBag.IdCurso })" class="btn markstart-course-detail__btn">Comprar curso por $@ViewBag.PrecioCurso</a>
         </div>
-        <a href="@Url.Action("AsignarCurso", "Home", new { id = ViewBag.IdCurso })" class="btn btn-primary mt-3">Comprar curso por $@ViewBag.PrecioCurso</a>
-    </div>
-    <h2 class="mt-4">Opiniones de emprendedores reales</h2>
-    <p>@ViewBag.Reseñas.Count() comentarios</p>
-    @if (ViewBag.Reseñas != null && ViewBag.Reseñas.Count > 0)
-    {
-        <div class="list-group">
-            @foreach (var reseña in ViewBag.Reseñas)
+
+        <div class="markstart-course-detail__reviews">
+            <div class="markstart-course-detail__reviews-header">
+                <h2>Opiniones de emprendedores reales</h2>
+                <span>@ViewBag.ReseñasTotales comentarios</span>
+            </div>
+
+            <div class="markstart-course-detail__rating-box">
+                <div class="markstart-course-detail__rating-score">
+                    <strong>@(ViewBag.PromedioReseñas != null ? ViewBag.PromedioReseñas.ToString("0.0") : "0.0")</strong>
+                    <div class="stars" aria-label="Calificación promedio">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            var active = i <= Math.Round((decimal)ViewBag.PromedioReseñas, MidpointRounding.AwayFromZero);
+                            <span class="star @(active ? "is-active" : "")">★</span>
+                        }
+                    </div>
+                    <small>Promedio General del Curso</small>
+                </div>
+
+                <div class="markstart-course-detail__rating-bars" aria-label="Calificación por reseñas">
+                    @foreach (var estrella in new[] { 5, 4, 3, 2, 1 })
+                    {
+                        var porcentaje = ViewBag.PorcentajesReseñas != null && ViewBag.PorcentajesReseñas.ContainsKey(estrella)
+                            ? (int)ViewBag.PorcentajesReseñas[estrella]
+                            : 0;
+                        <div>
+                            <span>@estrella</span>
+                            <div class="bar"><i style="width:@porcentaje%"></i></div>
+                            <span class="pct">@porcentaje%</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (ViewBag.Reseñas != null && ViewBag.ReseñasTotales > 0)
             {
-                <div class="list-group-item">
-                    <img src="/imagenes/@reseña.FotoPerfil" class="img-fluid" alt="@reseña.Nombre">
-                    <h5>@reseña.Nombre</h5>
-                    <p>@reseña.Texto</p>
-                    <p>Calificación: @reseña.Calificacion/5</p>
+                <div class="list-group markstart-course-detail__review-list">
+                    @foreach (var reseña in ViewBag.Reseñas)
+                    {
+                        <div class="list-group-item markstart-course-detail__review-item">
+                            <img src="/imagenes/@reseña.FotoPerfil" class="img-fluid" alt="@reseña.Nombre">
+                            <div class="markstart-course-detail__review-copy">
+                                <h5>@reseña.Nombre</h5>
+                                <p class="markstart-course-detail__review-role">Cerámica Botánica</p>
+                                <p>@reseña.Texto</p>
+                            </div>
+                        </div>
+                    }
                 </div>
             }
         </div>
-    }
-    <h2 class="mt-4">¿Qué vas a aprender paso a paso?</h2>
-    @if (ViewBag.Tareas != null && ViewBag.Tareas.Count > 0)
-    {
-        <ul>
-            @foreach (var tarea in ViewBag.Tareas)
+
+        <div class="markstart-course-detail__learn">
+            <h2>¿Qué vas a aprender paso a paso?</h2>
+            @if (ViewBag.Tareas != null && ViewBag.TareasTotales > 0)
             {
-                <li>@tarea.Nombre</li>
+                <div class="markstart-course-detail__learn-list">
+                    @foreach (var tarea in ViewBag.Tareas)
+                    {
+                        <div class="markstart-course-detail__learn-item">@tarea.Nombre</div>
+                    }
+                </div>
             }
-        </ul>
-    }
-    <a href="@Url.Action("AsignarCurso", "Home", new { id = ViewBag.IdCurso })" class="btn btn-primary mt-3">Comprar curso por $@ViewBag.PrecioCurso</a>
+        </div>
+
+        <div class="markstart-course-detail__cta-row">
+            <a href="@Url.Action("AsignarCurso", "Home", new { IdCurso = ViewBag.IdCurso })" class="btn markstart-course-detail__btn">Comprar curso por $@ViewBag.PrecioCurso</a>
+        </div>
+    </div>
 </div>
 

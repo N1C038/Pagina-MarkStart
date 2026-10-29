@@ -186,4 +186,37 @@ public class BD
         }
         return tareas;
     }
+
+    public bool buscarAsignacionCurso(int IdStartup, int IdCurso)
+    {
+        string query = @"SELECT IdCursoComprado, IdStartup, IdCurso, CantCompletadas
+                         FROM CursosComprados
+                         WHERE IdStartup = @IdStartup AND IdCurso = @IdCurso";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            return connection.QueryFirstOrDefault<dynamic>(query, new { IdStartup = IdStartup, IdCurso = IdCurso }) != null;
+        }
+    }
+    public void asignarCursoAStartup(int IdStartup, int IdCurso)
+    {
+        string query = @"INSERT INTO CursosComprados (IdStartup, IdCurso, CantCompletadas)
+                         VALUES (@IdStartup, @IdCurso, 0)";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            connection.Execute(query, new { IdStartup = IdStartup, IdCurso = IdCurso });
+        }
+    }
+
+    public Startup buscarStartupPorId(int IdStartup)
+    {
+        Startup startup = new Startup();
+        string query = @"SELECT IdStartup, Nombre, Problematica, NichoDeMercado, Producto
+                         FROM StartUps
+                         WHERE IdStartup = @IdStartup";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            startup = connection.QueryFirstOrDefault<Startup>(query, new { IdStartup = IdStartup });
+        }
+        return startup;
+    }
 }
