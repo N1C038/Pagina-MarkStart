@@ -3,28 +3,112 @@
 }
 
 <div class="container mt-5">
-    <h1>¿A que StartUp vas a asignar este nuevo curso?</h1>
+    <div class="markstart-assign-course" style="max-width: 760px; margin: 0 auto; text-align: center;">
+        <h1 class="markstart-assign-course__title">¿A qué StartUp vas a asignar este nuevo curso?</h1>
 
-    @if (ViewBag.Startups != null && ViewBag.Startups.Count > 0)
-    {
-        <div class="markstart-cursos-toolbar">
-                <ul class="dropdown-menu dropdown-menu-end">
-                    @foreach (var startup in ViewBag.Startups)
-                    {
-                        <li>
-                            <a class="dropdown-item" href="@Url.Action("AsignarCurso", "Home", new { IdStartup = startup.IdStartup, IdCurso = ViewBag.IdCurso })">@startup.Nombre</a>
-                        </li>
-                    }
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })">Agregar una Startup</a>
-                    </li>
-                </ul>
-        </div>
-    }
-    else{
-        <h2 class="mt-4">Todavia no tienes ninguna StartUp registrada</h2>
-        <p>Para poder asignar un curso, primero debes registrar una StartUp.</p>
-        <a href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })" class="btn btn-primary mt-3">Agregar una Startup</a>
-    }
+        @if (ViewBag.Startups != null && ViewBag.Startups.Count > 0)
+        {
+            <div class="markstart-assign-course__list">
+                @foreach (var startup in ViewBag.Startups)
+                {
+                    <a class="markstart-assign-course__item" href="@Url.Action("AsignarCursoPost", "Home", new { IdStartup = startup.IdStartup, IdCurso = ViewBag.IdCurso })">
+                        @startup.Nombre
+                    </a>
+                }
+
+                <a class="markstart-assign-course__item markstart-assign-course__item--secondary" href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })">
+                    + Agregar una Startup
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning mt-4 markstart-assign-course__empty" role="alert">
+                <h2>Todavía no tienes ninguna StartUp registrada</h2>
+                <p>Para poder asignar un curso, primero debes registrar una Startup y asociarla a tu usuario.</p>
+                <a href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })" class="btn markstart-btn markstart-btn--primary">Agregar una Startup</a>
+            </div>
+        }
+    </div>
 </div>
+
+<style>
+    .markstart-assign-course {
+        width: min(100%, 760px);
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .markstart-assign-course__title {
+        margin: 0 0 2rem;
+        font-size: clamp(2rem, 1.6vw + 1.4rem, 3.2rem);
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+        color: #111111;
+    }
+
+    .markstart-assign-course__list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .markstart-assign-course__item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: min(100%, 520px);
+        min-height: 62px;
+        padding: 0.9rem 1.25rem;
+        background: #2E92AB;
+        color: #ffffff;
+        border-radius: 0;
+        text-decoration: none;
+        font-size: 1.08rem;
+        font-weight: 500;
+        transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 10px 24px rgba(46, 146, 171, 0.18);
+    }
+
+    .markstart-assign-course__item:hover {
+        color: #ffffff;
+        text-decoration: none;
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+    }
+
+    .markstart-assign-course__item--secondary {
+        background: rgba(151, 207, 221, 0.22);
+        color: #111111;
+        border: 1.5px solid rgba(46, 146, 171, 0.6);
+        box-shadow: none;
+    }
+
+    .markstart-assign-course__item--secondary:hover {
+        color: #111111;
+    }
+
+    .markstart-assign-course__empty {
+        max-width: 620px;
+        margin: 2rem auto 0;
+        border-radius: 18px;
+        background: rgba(151, 207, 221, 0.12);
+        border: 1px solid rgba(46, 146, 171, 0.28);
+        color: #111111;
+        padding: 2rem 1.5rem;
+    }
+
+    .markstart-assign-course__empty h2 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        font-size: clamp(1.8rem, 1vw + 1.1rem, 2.6rem);
+    }
+
+    .markstart-assign-course__empty p {
+        margin-bottom: 1.25rem;
+        font-size: 1.05rem;
+    }
+
+</style>

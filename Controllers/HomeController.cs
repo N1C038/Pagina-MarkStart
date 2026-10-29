@@ -256,8 +256,42 @@ public class HomeController : Controller
         ViewBag.NombreCurso = curso.Nombre;
         ViewBag.DescripcionCurso = curso.Descripcion;
         ViewBag.PrecioCurso = curso.Precio;
-        ViewBag.Reseñas = bd.obtenerReseñasCurso(curso.IdCurso);
-        ViewBag.Tareas = bd.obtenerTareasCurso(curso.IdCurso);
+        ViewBag.FotoCurso = curso.FotoCurso;
+
+        var reseñas = bd.obtenerReseñasCurso(curso.IdCurso);
+        ViewBag.Reseñas = reseñas;
+        ViewBag.ReseñasTotales = reseñas.Count;
+
+        if (reseñas != null && reseñas.Count > 0)
+        {
+            var promedio = reseñas.Average(r => r.Calificacion);
+            ViewBag.PromedioReseñas = Math.Round(promedio, 1);
+
+            var porcentajes = new Dictionary<int, int>();
+            foreach (var estrella in new[] { 5, 4, 3, 2, 1 })
+            {
+                var cantidad = reseñas.Count(r => r.Calificacion == estrella);
+                var porcentaje = reseñas.Count > 0 ? (int)Math.Round((double)cantidad / reseñas.Count * 100) : 0;
+                porcentajes[estrella] = porcentaje;
+            }
+            ViewBag.PorcentajesReseñas = porcentajes;
+        }
+        else
+        {
+            ViewBag.PromedioReseñas = 0m;
+            ViewBag.PorcentajesReseñas = new Dictionary<int, int>
+            {
+                [5] = 0,
+                [4] = 0,
+                [3] = 0,
+                [2] = 0,
+                [1] = 0
+            };
+        }
+
+        var tareas = bd.obtenerTareasCurso(curso.IdCurso);
+        ViewBag.Tareas = tareas;
+        ViewBag.TareasTotales = tareas.Count;
 
         return View();
     }
@@ -286,6 +320,26 @@ public class HomeController : Controller
         return View();
     }
 
+
+public IActionResult AsignarCurso(int IdCurso)
+{
+    BD bd = new BD();
+    var usuarioIdString = HttpContext.Session.GetString("IdUsuario");
+    if (string.IsNullOrEmpty(usuarioIdString) || !int.TryParse(usuarioIdString, out int usuarioId))
+    {
+        return RedirectToAction("InicioSesion");
+    }
+
+    var curso = bd.buscarCursoPorId(IdCurso);
+    if (curso == null)
+    {
+        return NotFound();
+    }
+
+    ViewBag.Startups = bd.obtenerStartupsUsuario(usuarioId);
+    ViewBag.IdCurso = IdCurso;
+
+    return View();
     private string? GetApiKey()
     {
         var keys = new[]
@@ -440,4 +494,36 @@ public class HomeController : Controller
             return StatusCode(500, new { error = "La respuesta de la IA no tiene el formato esperado." });
         }
     }
+}
+
+public IActionResult AsignarCursoPost(int IdCurso, int IdStartup)
+{
+    BD bd = new BD();
+    var usuarioIdString = HttpContext.Session.GetString("IdUsuario");
+    if (string.IsNullOrEmpty(usuarioIdString) || !int.TryParse(usuarioIdString, out int usuarioId))
+    {
+        return RedirectToAction("InicioSesion");
+    }
+
+    var curso = bd.buscarCursoPorId(IdCurso);
+    if (curso == null)
+    {
+        return NotFound();
+    }
+
+    var startup = bd.buscarStartupPorId(IdStartup);
+    if (startup == null)
+    {
+        return NotFound();
+    }
+
+    if (bd.buscarAsignacionCurso(IdStartup, IdCurso))
+    {
+        return RedirectToAction("AsignarCurso", new { IdCurso = IdCurso, error = "Esta startup ya tiene asignado este curso." });
+    }
+
+    bd.asignarCursoAStartup(IdCurso, IdStartup);
+
+    return RedirectToAction("Cursos", new { IdStartup = IdStartup });
+}
 }
