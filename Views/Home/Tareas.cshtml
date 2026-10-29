@@ -3,6 +3,14 @@
     var curso = ViewBag.Curso as MarkStart.Models.Curso ?? new MarkStart.Models.Curso();
     var tareas = ViewBag.Tareas as List<MarkStart.Models.Tarea> ?? new List<MarkStart.Models.Tarea>();
     var tareaActual = tareas.FirstOrDefault();
+    var tareasJson = System.Text.Json.JsonSerializer.Serialize(
+        tareas.Select(t => new {
+            idTarea = t.IdTarea,
+            nombre = t.Nombre ?? string.Empty,
+            explicacion = t.Explicacion ?? string.Empty,
+            tip = t.Tip ?? string.Empty,
+            fotoTip = t.FotoTip ?? string.Empty
+        }).ToList());
 }
 
 <div class="markstart-task-page">
@@ -10,42 +18,56 @@
 
     @if (tareaActual != null)
     {
-        <div class="markstart-task-panel">
-            <div class="markstart-task-panel__header">
-                <div class="markstart-task-panel__title">Paso 1:</div>
-                <div class="markstart-task-panel__subtitle">@tareaActual.Nombre</div>
-                <button type="button" class="markstart-task-panel__member-btn">Añadir miembros</button>
-            </div>
+        <div class="markstart-task-panel-shell">
+            <button type="button" class="markstart-task-panel__member-btn">Añadir miembros</button>
 
-            <div class="markstart-task-panel__body">
-                <div class="markstart-task-panel__content">
-                    <p>@tareaActual.Explicacion</p>
+            <div class="markstart-task-panel" id="task-panel">
+                <div class="markstart-task-panel__header">
+                    <div class="markstart-task-panel__title" id="task-step-title">Paso 1:</div>
+                    <div class="markstart-task-panel__subtitle" id="task-name">@tareaActual.Nombre</div>
                 </div>
 
-                <div class="markstart-task-panel__actions">
-                    <div class="markstart-task-panel__needs">¿Necesitas ayuda?</div>
-                    <button type="button" class="markstart-task-panel__button" onclick="document.getElementById('tips-@tareaActual.IdTarea')?.scrollIntoView({ behavior: 'smooth', block: 'start' });">Ir a los Tips</button>
-                    <button type="button" class="markstart-task-panel__button markstart-task-panel__button--secondary" onclick="event.preventDefault();">Subir</button>
+                <div class="markstart-task-panel__body">
+                    <div class="markstart-task-panel__content">
+                        <p id="task-description">@tareaActual.Explicacion</p>
+                    </div>
+
+                    <div class="markstart-task-panel__actions">
+                        <div class="markstart-task-panel__needs">¿Necesitas ayuda?</div>
+                        <button type="button" class="markstart-task-panel__button" id="task-go-tips-btn" onclick="document.getElementById('tips-@tareaActual.IdTarea')?.scrollIntoView({ behavior: 'smooth', block: 'start' });">Ir a los Tips</button>
+                        <div class="markstart-task-panel__upload-label">Subir lo que creaste</div>
+                        <input type="file" id="task-file-input" class="markstart-task-panel__file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.txt,image/*" />
+                        <button type="button" class="markstart-task-panel__button markstart-task-panel__button--secondary" id="task-upload-btn">Subir</button>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <div class="markstart-task-next-objective" id="task-next-objective" aria-live="polite">
+            <span>Próximo Objetivo:</span> @if (tareas.Count > 1) { @tareas[1].Nombre }
         </div>
     }
 
     @if (tareaActual != null)
     {
         <div id="tips-@tareaActual.IdTarea" class="markstart-task-tip-block">
-            <div class="markstart-task-tip-block__header">Tip #1</div>
+            <div class="markstart-task-tip-block__header" id="tip-header">Tip #1</div>
             <div class="markstart-task-tip-block__body">
                 <div class="markstart-task-tip-block__text">
-                    <p>@tareaActual.Tip</p>
+                    <p id="tip-text">@tareaActual.Tip</p>
                 </div>
                 <div class="markstart-task-tip-block__visual">
                     @if (!string.IsNullOrWhiteSpace(tareaActual.FotoTip))
                     {
-                        <img src="/imagenes/@tareaActual.FotoTip" alt="@tareaActual.Nombre" />
+                        <img id="tip-image" src="/imagenes/@tareaActual.FotoTip" alt="@tareaActual.Nombre" />
+                    }
+                    else
+                    {
+                        <img id="tip-image" src="" alt="" style="display:none;" />
                     }
                 </div>
             </div>
+            <div class="markstart-task-tip-block__footer" id="tip-footer">Tip #2</div>
         </div>
     }
 
@@ -66,6 +88,95 @@
 </div>
 
 <script>
+    const tasks = @Html.Raw(tareasJson);
+    const taskGoTipsBtn = document.getElementById('task-go-tips-btn');
+    const taskUploadBtn = document.getElementById('task-upload-btn');
+    const taskFileInput = document.getElementById('task-file-input');
+    const taskStepTitle = document.getElementById('task-step-title');
+    const taskName = document.getElementById('task-name');
+    const taskDescription = document.getElementById('task-description');
+    const taskNextObjective = document.getElementById('task-next-objective');
+    const tipHeader = document.getElementById('tip-header');
+    const tipText = document.getElementById('tip-text');
+    const tipFooter = document.getElementById('tip-footer');
+    const tipImage = document.getElementById('tip-image');
+
+    let currentTaskIndex = tasks.findIndex(t => t.idTarea === @((tareaActual != null) ? tareaActual.IdTarea : 0));
+    if (currentTaskIndex === -1) {
+        currentTaskIndex = 0;
+    }
+
+    function updateTaskView(index) {
+        const task = tasks[index];
+        if (!task) return;
+
+        const nextTask = tasks[index + 1];
+        const currentTipNumber = index + 1;
+        const nextTipNumber = currentTipNumber + 1;
+
+        taskStepTitle.textContent = 'Paso ' + (index + 1) + ':';
+        taskName.textContent = task.nombre;
+        taskDescription.textContent = task.explicacion;
+
+        if (taskGoTipsBtn) {
+            taskGoTipsBtn.setAttribute('onclick', "document.getElementById('tips-" + task.idTarea + "')?.scrollIntoView({ behavior: 'smooth', block: 'start' });");
+        }
+
+        if (tipHeader) {
+            tipHeader.textContent = 'Tip #' + currentTipNumber;
+        }
+
+        if (tipText) {
+            tipText.textContent = task.tip;
+        }
+
+        if (tipImage) {
+            if (task.fotoTip) {
+                tipImage.src = '/imagenes/' + task.fotoTip;
+                tipImage.alt = task.nombre;
+                tipImage.style.display = 'block';
+            } else {
+                tipImage.src = '';
+                tipImage.alt = '';
+                tipImage.style.display = 'none';
+            }
+        }
+
+        if (tipFooter) {
+            tipFooter.textContent = 'Tip #' + nextTipNumber;
+        }
+
+        if (taskNextObjective) {
+            if (nextTask) {
+                taskNextObjective.innerHTML = '<span>Próximo Objetivo:</span> ' + nextTask.nombre;
+            } else {
+                taskNextObjective.innerHTML = '<span>Fase completada:</span> ¡Terminaste esta etapa!';
+            }
+        }
+    }
+
+    if (taskUploadBtn) {
+        taskUploadBtn.addEventListener('click', function () {
+            taskFileInput?.click();
+        });
+    }
+
+    if (taskFileInput) {
+        taskFileInput.addEventListener('change', function (event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (currentTaskIndex < tasks.length - 1) {
+                currentTaskIndex += 1;
+                updateTaskView(currentTaskIndex);
+            }
+
+            taskFileInput.value = '';
+        });
+    }
+
+    updateTaskView(currentTaskIndex);
+
     const chatSessions = {
         chat1: [],
         chat2: [],
