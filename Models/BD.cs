@@ -144,4 +144,46 @@ public class BD
         }
         return reseñas;
     }
+    public List<Reseña> obtenerReseñasCurso(int IdCurso)
+    {
+        List<Reseña> reseñas = new List<Reseña>();
+        string query = @"SELECT r.IdReseña,
+                                u.Nombre,
+                                r.Texto AS Texto,
+                                u.FotoPerfil AS FotoPerfil,
+                                r.Calificacion
+                         FROM Reseñas r
+                         INNER JOIN Usuarios u ON r.IdUsuario = u.IdUsuario
+                         WHERE r.IdCurso = @IdCurso
+                         ORDER BY r.Calificacion DESC";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            reseñas = connection.Query<Reseña>(query, new { IdCurso = IdCurso }).ToList();
+        }
+        return reseñas;
+    }
+    public Curso buscarCursoPorId(int IdCurso)
+    {
+        Curso curso = new Curso();
+        string query = @"SELECT IdCurso, CantTareas, Precio, Nombre, Descripcion, FotoCurso
+                         FROM Cursos
+                         WHERE IdCurso = @IdCurso";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            curso = connection.QueryFirstOrDefault<Curso>(query, new { IdCurso = IdCurso });
+        }
+        return curso;
+    }
+    public List<Tarea> obtenerTareasCurso(int IdCurso)
+    {
+        List<Tarea> tareas = new List<Tarea>();
+        string query = @"SELECT t.IdTarea, t.Nombre, t.Descripcion, t.IdCurso
+                         FROM Tareas t
+                         WHERE t.IdCurso = @IdCurso";
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            tareas = connection.Query<Tarea>(query, new { IdCurso = IdCurso }).ToList();
+        }
+        return tareas;
+    }
 }

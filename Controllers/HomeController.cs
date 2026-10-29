@@ -230,4 +230,17 @@ public class HomeController : Controller
 
         return RedirectToAction("Index", "Home");
     }
+    public IActionResult DetalleCurso(int IdCurso)
+    {
+        BD bd = new BD();
+        Curso curso = bd.buscarCursoPorId(IdCurso);
+        ViewBag.IdCurso = curso.IdCurso;
+        ViewBag.NombreCurso = curso.Nombre;
+        ViewBag.DescripcionCurso = curso.Descripcion;
+        ViewBag.PrecioCurso = curso.Precio;
+        ViewBag.Reseñas = bd.obtenerReseñasCurso(curso.IdCurso);
+        ViewBag.Tareas = bd.obtenerTareasCurso(curso.IdCurso);
+
+        return View();
+    }
 }
