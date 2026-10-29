@@ -177,7 +177,7 @@ public class BD
     public List<Tarea> obtenerTareasCurso(int IdCurso)
     {
         List<Tarea> tareas = new List<Tarea>();
-        string query = @"SELECT t.IdTarea, t.Nombre, t.Explicacion, t.IdCurso
+        string query = @"SELECT t.IdTarea, t.Nombre, t.Explicacion, t.FotoTip, t.Tip, t.IdCurso
                          FROM Tareas t
                          WHERE t.IdCurso = @IdCurso";
         using (SqlConnection connection = new SqlConnection(conexion))
