@@ -18,11 +18,11 @@
                 </a>
             </div>
 
-            @{ var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); var isHome = currentController == "Home" && currentAction == "Index"; var isNosotros = currentController == "Home" && (currentAction == "Privacy" || currentAction == "Nosotros"); var isMarketing = currentController == "Home" && (currentAction == "Privacy" || currentAction == "Marketing"); var isCursos = currentController == "Home" && currentAction == "Cursos"; }
+            @{ var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); var isHome = currentController == "Home" && currentAction == "Index"; var isNosotros = currentController == "Home" && (currentAction == "Privacy" || currentAction == "Nosotros"); var isMarketing = currentController == "Home" && currentAction == "Marketing"; var isCursos = currentController == "Home" && currentAction == "Cursos"; }
             <nav class="header-nav" aria-label="Main navigation">
                 <a class="header-link @(isHome ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 <a class="header-link @(isNosotros ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Nosotros</a>
-                <a class="header-link @(isMarketing ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Privacy">Marketing</a>
+                <a class="header-link @(isMarketing ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Marketing">Marketing</a>
                 @if (!string.IsNullOrEmpty(Context.Session.GetString("Usuario")))
                 {
                     <a class="header-link @(isCursos ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Cursos">Cursos</a>

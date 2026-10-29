@@ -380,13 +380,16 @@ body {
 
 .hero-slide--marketing {
     background-image: url('/imagenes/Marketing.jpg');
+    background-size: 60% auto;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .hero-slide--team {
     background-image: url('/imagenes/LogoHorizontal.png');
-    background-size: 80%;
+    background-size: 60% auto;
     background-repeat: no-repeat;
-    background-position: top center;
+    background-position: center center;
 }
 
 .hero-card {
@@ -1239,5 +1242,210 @@ body {
     .google-auth-btn:hover {
         width: auto;
         min-width: 230px;
+    }
+}
+
+.markstart-about-section {
+    width: min(1180px, calc(100% - 60px));
+    margin: 0 auto 36px;
+}
+
+.markstart-about-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 12px;
+}
+
+.markstart-about-box {
+    background: #9fd4e3;
+    min-height: 170px;
+    padding: 24px 26px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.markstart-about-box h3 {
+    margin: 0 0 12px;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(1.5rem, 1.2vw + 0.9rem, 2.2rem);
+    font-weight: 400;
+    color: var(--markstart-text);
+}
+
+.markstart-about-box p {
+    margin: 0;
+    max-width: 430px;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--markstart-text);
+}
+
+.markstart-about-banner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    background: #9fd4e3;
+    width: 100%;
+    min-height: 120px;
+}
+
+.markstart-about-banner__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 28px;
+    min-height: 120px;
+}
+
+.markstart-about-banner__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 2px solid #2e92ab;
+    border-radius: 50%;
+    color: #2e92ab;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.markstart-about-banner__content {
+    flex: 1;
+}
+
+.markstart-about-banner__content h4 {
+    margin: 0 0 6px;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(1.2rem, 0.9vw + 0.7rem, 1.9rem);
+    font-weight: 400;
+    color: var(--markstart-text);
+}
+
+.markstart-about-banner__content p {
+    margin: 0;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--markstart-text);
+}
+
+@media (max-width: 900px) {
+    .markstart-about-grid,
+    .markstart-about-banner {
+        grid-template-columns: 1fr;
+    }
+
+    .markstart-about-section {
+        width: min(100% - 24px, 1180px);
+    }
+
+    .markstart-about-banner__item {
+        padding: 16px 18px;
+    }
+}
+
+.markstart-marketing-page {
+    width: min(1180px, calc(100% - 60px));
+    margin: 0 auto 50px;
+    padding-top: 18px;
+}
+
+.markstart-marketing__title {
+    margin: 0 0 26px;
+    text-align: center;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(2.4rem, 2.1vw + 1.3rem, 4rem);
+    font-weight: 400;
+    color: var(--markstart-text);
+}
+
+.markstart-marketing__section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: #9fd4e3;
+    margin-bottom: 26px;
+    min-height: 260px;
+}
+
+.markstart-marketing__text,
+.markstart-marketing__image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.markstart-marketing__text {
+    padding: 28px 34px;
+    text-align: left;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.markstart-marketing__text h3 {
+    margin: 0 0 12px;
+    font-family: "IBM Plex Serif", serif;
+    font-size: clamp(1.7rem, 1vw + 1rem, 2.5rem);
+    font-weight: 400;
+    color: var(--markstart-text);
+}
+
+.markstart-marketing__text p {
+    margin: 0;
+    max-width: 420px;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--markstart-text);
+}
+
+.markstart-marketing__image {
+    padding: 18px 18px;
+}
+
+.markstart-marketing__image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 260px;
+    object-fit: contain;
+}
+
+.markstart-marketing__section--middle {
+    grid-template-columns: 1.15fr 0.85fr;
+}
+
+.markstart-marketing__section--bottom {
+    grid-template-columns: 0.95fr 1.05fr;
+}
+
+.markstart-marketing__image--middle-left {
+    padding: 10px 18px;
+}
+
+.markstart-marketing__text--middle {
+    justify-content: center;
+}
+
+@media (max-width: 900px) {
+    .markstart-marketing-page {
+        width: min(100% - 24px, 1180px);
+    }
+
+    .markstart-marketing__section,
+    .markstart-marketing__section--middle,
+    .markstart-marketing__section--bottom {
+        grid-template-columns: 1fr;
+    }
+
+    .markstart-marketing__text {
+        padding: 24px 20px;
     }
 }
