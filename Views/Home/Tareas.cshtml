@@ -1,40 +1,155 @@
 @{
     ViewData["Title"] = "Tareas";
-    var curso = ViewBag.Curso as MarkStart.Models.Curso;
+    var curso = ViewBag.Curso as MarkStart.Models.Curso ?? new MarkStart.Models.Curso();
     var tareas = ViewBag.Tareas as List<MarkStart.Models.Tarea> ?? new List<MarkStart.Models.Tarea>();
+    var tareaActual = tareas.FirstOrDefault();
 }
 
-<div class="container mt-5">
-    @if (curso == null)
-    {
-        <div class="alert alert-warning">No se encontró el curso solicitado.</div>
-    }
-    else
-    {
-        <div class="mb-4">
-            <h1>@curso.Nombre</h1>
-            <p class="text-muted">@curso.Descripcion</p>
-        </div>
+<div class="markstart-task-page">
+    <h1 class="markstart-task-page__title">Fase de empatizar</h1>
 
-        @if (tareas.Count == 0)
-        {
-            <div class="alert alert-info">Este curso todavía no tiene tareas asignadas.</div>
-        }
-        else
-        {
-            <div class="list-group">
-                @foreach (var tarea in tareas)
-                {
-                    <div class="list-group-item">
-                        <h4>@tarea.Nombre</h4>
-                        <p>@tarea.Explicacion</p>
-                    </div>
-                }
+    @if (tareaActual != null)
+    {
+        <div class="markstart-task-panel">
+            <div class="markstart-task-panel__header">
+                <div class="markstart-task-panel__title">Paso 1:</div>
+                <div class="markstart-task-panel__subtitle">@tareaActual.Nombre</div>
+                <button type="button" class="markstart-task-panel__member-btn">Añadir miembros</button>
             </div>
-        }
 
-        <div class="mt-4">
-            <a href="@Url.Action("Cursos", "Home", new { IdStartup = 0 })" class="btn btn-secondary">Volver a cursos</a>
+            <div class="markstart-task-panel__body">
+                <div class="markstart-task-panel__content">
+                    <p>@tareaActual.Explicacion</p>
+                </div>
+
+                <div class="markstart-task-panel__actions">
+                    <div class="markstart-task-panel__needs">¿Necesitas ayuda?</div>
+                    <button type="button" class="markstart-task-panel__button" onclick="document.getElementById('tips-@tareaActual.IdTarea')?.scrollIntoView({ behavior: 'smooth', block: 'start' });">Ir a los Tips</button>
+                    <button type="button" class="markstart-task-panel__button markstart-task-panel__button--secondary" onclick="event.preventDefault();">Subir</button>
+                </div>
+            </div>
         </div>
     }
+
+    @if (tareaActual != null)
+    {
+        <div id="tips-@tareaActual.IdTarea" class="markstart-task-tip-block">
+            <div class="markstart-task-tip-block__header">Tip #1</div>
+            <div class="markstart-task-tip-block__body">
+                <div class="markstart-task-tip-block__text">
+                    <p>@tareaActual.Tip</p>
+                </div>
+                <div class="markstart-task-tip-block__visual">
+                    @if (!string.IsNullOrWhiteSpace(tareaActual.FotoTip))
+                    {
+                        <img src="/imagenes/@tareaActual.FotoTip" alt="@tareaActual.Nombre" />
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <h2 class="markstart-task-chat__title">Hola, ¿Qué vamos a hacer hoy?</h2>
+
+    <div class="markstart-task-chat">
+        <div class="markstart-task-chat__header">
+            <button type="button" class="markstart-task-chat__tab active" data-chat="chat1">chat1</button>
+            <button type="button" class="markstart-task-chat__tab" data-chat="chat2">chat2</button>
+            <button type="button" class="markstart-task-chat__tab" data-chat="chat3">chat3</button>
+        </div>
+        <div class="markstart-task-chat__messages" id="chatMessages"></div>
+        <div class="markstart-task-chat__composer">
+            <input id="chatInput" type="text" placeholder="Escribí tu pregunta aquí..." />
+            <button id="sendChatBtn" type="button">Enviar</button>
+        </div>
+    </div>
 </div>
+
+<script>
+    const chatSessions = {
+        chat1: [],
+        chat2: [],
+        chat3: []
+    };
+
+    const tabs = document.querySelectorAll('.markstart-task-chat__tab');
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+    const sendBtn = document.getElementById('sendChatBtn');
+    let activeChat = 'chat1';
+
+    function renderChat() {
+        const session = chatSessions[activeChat] || [];
+        messages.innerHTML = '';
+
+        session.forEach((item) => {
+            const div = document.createElement('div');
+            div.className = 'markstart-task-chat__message ' + (item.isUser ? 'markstart-task-chat__message--user' : 'markstart-task-chat__message--bot');
+            div.textContent = item.text;
+            messages.appendChild(div);
+        });
+
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addMessage(text, isUser) {
+        if (!chatSessions[activeChat]) {
+            chatSessions[activeChat] = [];
+        }
+        chatSessions[activeChat].push({ text, isUser });
+        renderChat();
+    }
+
+    tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+            activeChat = tab.dataset.chat;
+            tabs.forEach((t) => t.classList.toggle('active', t === tab));
+            renderChat();
+        });
+    });
+
+    async function askAI() {
+        const prompt = (input.value || '').trim();
+        if (!prompt) return;
+
+        addMessage(prompt, true);
+        input.value = '';
+
+        try {
+            const response = await fetch('/Home/AskAI', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt })
+            });
+
+            const responseText = await response.text();
+            let data = {};
+
+            if (responseText) {
+                try {
+                    data = JSON.parse(responseText);
+                } catch {
+                    data = { error: responseText };
+                }
+            }
+
+            if (response.ok && data.answer) {
+                addMessage(data.answer, false);
+            } else {
+                addMessage(data.error || 'No pude responder.', false);
+            }
+        } catch (error) {
+            addMessage('No pude conectar con la IA en este momento. Revisa la clave o el endpoint del proveedor.', false);
+        }
+    }
+
+    sendBtn?.addEventListener('click', askAI);
+    input?.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            askAI();
+        }
+    });
+
+    renderChat();
+</script>

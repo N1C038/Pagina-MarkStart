@@ -1497,6 +1497,160 @@ body {
     width: 100%;
     height: auto;
     max-height: none;
+}
+.markstart-task-page {
+    width: min(1100px, calc(100% - 40px));
+    margin: 24px auto 50px;
+    padding: 0 0 40px;
+    color: #111;
+}
+
+.markstart-task-page__title {
+    margin: 0 0 28px;
+    text-align: center;
+    font-size: clamp(2.5rem, 2.8vw + 1rem, 4.3rem);
+    font-family: "IBM Plex Serif", serif;
+    font-weight: 700;
+    color: #111;
+}
+
+.markstart-task-panel {
+    background: #9ad2dd;
+    border-radius: 0;
+    overflow: hidden;
+    margin-bottom: 24px;
+    border: 1px solid rgba(12, 77, 90, 0.15);
+}
+
+.markstart-task-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    background: rgba(0, 0, 0, 0.02);
+    padding: 18px 26px 14px;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.markstart-task-panel__title {
+    flex: 0 0 auto;
+    font-weight: 700;
+}
+
+.markstart-task-panel__subtitle {
+    flex: 1;
+    font-weight: 600;
+}
+
+.markstart-task-panel__member-btn {
+    border: none;
+    background: #dfeef2;
+    color: #111;
+    padding: 10px 18px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.markstart-task-panel__body {
+    display: grid;
+    grid-template-columns: 1.7fr 0.9fr;
+    gap: 18px;
+    padding: 18px 22px 22px;
+}
+
+.markstart-task-panel__content {
+    display: flex;
+    align-items: center;
+}
+
+.markstart-task-panel__content p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #111;
+}
+
+.markstart-task-panel__actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.markstart-task-panel__needs {
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+.markstart-task-panel__button {
+    width: 100%;
+    max-width: 150px;
+    min-height: 38px;
+    border: none;
+    background: #3ea8c7;
+    color: white;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.markstart-task-panel__button--secondary {
+    background: #2b92ab;
+}
+
+.markstart-task-tip-block {
+    background: #9ad2dd;
+    margin-bottom: 18px;
+    border: 1px solid rgba(12, 77, 90, 0.15);
+}
+
+.markstart-task-tip-block__header {
+    background: rgba(21, 116, 136, 0.15);
+    padding: 12px 18px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.markstart-task-tip-block__body {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: 20px;
+    padding: 20px 22px 22px;
+    align-items: stretch;
+}
+
+.markstart-task-tip-block__text {
+    display: flex;
+    align-items: center;
+}
+
+.markstart-task-tip-block__text p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #111;
+}
+
+.markstart-task-tip-block__visual {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    padding: 10px;
+}
+
+.markstart-task-tip-block__visual img {
+    max-width: 100%;
+    max-height: 180px;
     object-fit: contain;
     display: block;
 }
@@ -1796,15 +1950,106 @@ body {
     box-sizing: border-box;
 }
 
-@media (max-width: 900px) {
-    .markstart-course-detail__learn,
-    .markstart-course-detail__cta-row,
-    .markstart-course-detail__reviews,
-    .markstart-course-detail__hero {
-        width: min(100% - 20px, 1180px);
-    }
 
-    .markstart-course-detail__learn-list {
-        grid-template-columns: 1fr;
-    }
+.markstart-task-chat__title {
+    margin: 26px 0 18px;
+    text-align: center;
+    font-size: clamp(2rem, 1.7vw + 1.1rem, 3.3rem);
+    font-weight: 700;
+    color: #111;
+    font-family: "IBM Plex Serif", serif;
 }
+
+.markstart-task-chat {
+    background: #dfeef2;
+    border: 1px solid rgba(12, 77, 90, 0.15);
+    margin-top: 6px;
+    overflow: hidden;
+}
+
+.markstart-task-chat__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: rgba(17, 74, 86, 0.06);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #111;
+}
+
+.markstart-task-chat__tab {
+    border: none;
+    background: transparent;
+    color: #111;
+    font-weight: 700;
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.markstart-task-chat__tab.active {
+    background: rgba(46, 146, 171, 0.15);
+}
+
+.markstart-task-chat__messages {
+    background: #dff1f5;
+    min-height: 180px;
+    padding: 20px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.markstart-task-chat__message {
+    max-width: 75%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.markstart-task-chat__message--user {
+    align-self: flex-end;
+    background: #d5eaf3;
+    color: #111;
+    border: 1px solid rgba(7, 96, 116, 0.15);
+}
+
+.markstart-task-chat__message--bot {
+    align-self: flex-start;
+    background: #bfe1eb;
+    color: #111;
+    border: 1px solid rgba(7, 96, 116, 0.15);
+}
+
+.markstart-task-chat__composer {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 10px;
+    padding: 14px 16px 18px;
+    background: #dfeef2;
+}
+
+.markstart-task-chat__composer input {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid rgba(17, 17, 17, 0.15);
+    background: rgba(255, 255, 255, 0.35);
+    padding: 10px 12px;
+    color: #111;
+    outline: none;
+}
+
+.markstart-task-chat__composer button {
+    min-height: 42px;
+    border: none;
+    background: #2c8aa7;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+

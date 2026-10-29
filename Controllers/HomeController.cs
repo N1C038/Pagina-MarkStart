@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System;
 using System.IO;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using MarkStart.Models;
 using Microsoft.AspNetCore.Hosting;
@@ -9,17 +11,28 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using System.Net.Http.Headers;
+
 namespace MarkStart.Controllers;
+
+public class AskAiRequest
+{
+    public string? Prompt { get; set; }
+}
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IWebHostEnvironment _env;
+    private readonly IConfiguration _configuration;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env)
+    public HomeController(ILogger<HomeController> logger, IWebHostEnvironment env, IConfiguration configuration, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
         _env = env;
+        _configuration = configuration;
+        _httpClientFactory = httpClientFactory;
     }
 
     private void IniciarSesion(Usuario usuario)
@@ -287,6 +300,10 @@ public class HomeController : Controller
         BD bd = new BD();
         Curso curso = bd.buscarCursoPorId(Id);
 
+        if(string.IsNullOrEmpty(HttpContext.Session.GetString("IdUsuario"))){
+            return RedirectToAction("Index");
+        }
+
         if (curso == null)
         {
             return NotFound();
@@ -295,6 +312,10 @@ public class HomeController : Controller
         ViewBag.Curso = curso;
         ViewBag.Tareas = bd.obtenerTareasCurso(Id);
         ViewBag.IdCurso = curso.IdCurso;
+
+        ViewBag.NombreCurso = curso.Nombre;
+        ViewBag.DescripcionCurso = curso.Descripcion;
+
 
         return View();
     }
@@ -319,6 +340,160 @@ public IActionResult AsignarCurso(int IdCurso)
     ViewBag.IdCurso = IdCurso;
 
     return View();
+    private string? GetApiKey()
+    {
+        var keys = new[]
+        {
+            _configuration["Groq:ApiKey"],
+            _configuration["Groq__ApiKey"],
+            _configuration["GrokCloud:ApiKey"],
+            _configuration["GrokCloud__ApiKey"],
+            _configuration["OpenAI:ApiKey"],
+            _configuration["OpenAI__ApiKey"],
+            Environment.GetEnvironmentVariable("GROQ_API_KEY"),
+            Environment.GetEnvironmentVariable("GROK_API_KEY"),
+            Environment.GetEnvironmentVariable("GROKCLOUD_API_KEY"),
+            Environment.GetEnvironmentVariable("OPENAI_API_KEY"),
+            Environment.GetEnvironmentVariable("OpenAI_API_KEY")
+        };
+
+        return keys
+            .Where(k => !string.IsNullOrWhiteSpace(k))
+            .Select(k => k.Trim())
+            .FirstOrDefault();
+    }
+
+    private string GetEndpoint()
+    {
+        return _configuration["Groq:Endpoint"]
+            ?? _configuration["GrokCloud:Endpoint"]
+            ?? _configuration["OpenAI:Endpoint"]
+            ?? "https://api.groq.com/openai/v1/chat/completions";
+    }
+
+    private string GetModel()
+    {
+        return _configuration["Groq:Model"]
+            ?? _configuration["GrokCloud:Model"]
+            ?? _configuration["OpenAI:Model"]
+            ?? "llama-3.1-8b-instant";
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AskAI([FromBody] AskAiRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request?.Prompt))
+        {
+            return BadRequest(new { error = "La pregunta es obligatoria." });
+        }
+
+        var apiKey = GetApiKey();
+        var model = GetModel();
+        var endpoint = GetEndpoint();
+
+        var placeholderValues = new[]
+        {
+            "TU_API_KEY_DE_OPENAI",
+            "TU_API_KEY",
+            "YOUR_API_KEY",
+            "API_KEY_AQUI",
+            "INSERT_YOUR_KEY_HERE",
+            "TU_API_KEY_DE_GROKCLOUD"
+        };
+
+        if (string.IsNullOrWhiteSpace(apiKey) || placeholderValues.Any(v => string.Equals(v, apiKey, StringComparison.OrdinalIgnoreCase)))
+        {
+            return StatusCode(500, new { error = "Falta configurar la API key de GrokCloud/OpenAI. Agregala la clave en appsettings.json, user-secrets o variable de entorno GROK_API_KEY." });
+        }
+
+        using var client = _httpClientFactory.CreateClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        HttpResponseMessage response;
+        string content;
+
+        try
+        {
+            var payload = new
+            {
+                model,
+                messages = new[]
+                {
+                    new { role = "system", content = "Responde como asesor de marketing y emprendimiento, en español, breve y útil." },
+                    new { role = "user", content = request.Prompt }
+                },
+                temperature = 0.7,
+                max_tokens = 400
+            };
+
+            response = await client.PostAsJsonAsync(endpoint, payload);
+            content = await response.Content.ReadAsStringAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al consultar la API de IA. Endpoint: {Endpoint}. Model: {Model}", endpoint, model);
+            return StatusCode(500, new { error = $"No se pudo conectar con la IA: {ex.Message}" });
+        }
+
+        if (!response.IsSuccessStatusCode)
+        {
+            string message = "No pude contactar con la IA.";
+
+            try
+            {
+                using var doc = JsonDocument.Parse(content);
+                if (doc.RootElement.TryGetProperty("error", out var errorElement))
+                {
+                    if (errorElement.TryGetProperty("message", out var messageElement))
+                    {
+                        message = messageElement.GetString() ?? message;
+                    }
+                    else if (errorElement.ValueKind == JsonValueKind.String)
+                    {
+                        message = errorElement.GetString() ?? message;
+                    }
+                }
+            }
+            catch
+            {
+                message = content;
+            }
+
+            return StatusCode((int)response.StatusCode, new { error = message });
+        }
+
+        try
+        {
+            using var doc = JsonDocument.Parse(content);
+            var choices = doc.RootElement.GetProperty("choices");
+            var firstChoice = choices[0];
+            var message = firstChoice.GetProperty("message");
+
+            string? answer = null;
+
+            if (message.TryGetProperty("content", out var contentElement))
+            {
+                if (contentElement.ValueKind == JsonValueKind.String)
+                {
+                    answer = contentElement.GetString();
+                }
+                else if (contentElement.ValueKind == JsonValueKind.Array)
+                {
+                    answer = string.Concat(contentElement.EnumerateArray()
+                        .Select(e => e.TryGetProperty("text", out var textElement)
+                            ? textElement.GetString() ?? ""
+                            : ""));
+                }
+            }
+
+            return Json(new { answer = answer ?? "No pude generar una respuesta." });
+        }
+        catch
+        {
+            return StatusCode(500, new { error = "La respuesta de la IA no tiene el formato esperado." });
+        }
+    }
 }
 
 public IActionResult AsignarCursoPost(int IdCurso, int IdStartup)
