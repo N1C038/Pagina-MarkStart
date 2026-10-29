@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "AsignarCurso";
+}
+
+<div class="container mt-5">
+    <h1>¿A que StartUp vas a asignar este nuevo curso?</h1>
+
+    @if (ViewBag.Startups != null && ViewBag.Startups.Count > 0)
+    {
+        <div class="markstart-cursos-toolbar">
+                <ul class="dropdown-menu dropdown-menu-end">
+                    @foreach (var startup in ViewBag.Startups)
+                    {
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action("AsignarCurso", "Home", new { IdStartup = startup.IdStartup, IdCurso = ViewBag.IdCurso })">@startup.Nombre</a>
+                        </li>
+                    }
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })">Agregar una Startup</a>
+                    </li>
+                </ul>
+        </div>
+    }
+    else{
+        <h2 class="mt-4">Todavia no tienes ninguna StartUp registrada</h2>
+        <p>Para poder asignar un curso, primero debes registrar una StartUp.</p>
+        <a href="@Url.Action("AgregarStartup", "Home", new { IdStartup = 0 })" class="btn btn-primary mt-3">Agregar una Startup</a>
+    }
+</div>

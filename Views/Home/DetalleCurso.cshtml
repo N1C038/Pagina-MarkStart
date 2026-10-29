@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "DetalleCurso";
+}
+
+<div class="container mt-5">
+    <h1>@ViewBag.NombreCurso</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/images/@ViewBag.ImagenCurso" class="img-fluid" alt="@ViewBag.NombreCurso">
+        </div>
+        <div class="col-md-6">
+            <p>@ViewBag.DescripcionCurso</p>
+        </div>
+        <a href="@Url.Action("AsignarCurso", "Home", new { id = ViewBag.IdCurso })" class="btn btn-primary mt-3">Comprar curso por $@ViewBag.PrecioCurso</a>
+    </div>
+    <h2 class="mt-4">Opiniones de emprendedores reales</h2>
+    <p>@ViewBag.Reseñas.Count() comentarios</p>
+    @if (ViewBag.Reseñas != null && ViewBag.Reseñas.Count > 0)
+    {
+        <div class="list-group">
+            @foreach (var reseña in ViewBag.Reseñas)
+            {
+                <div class="list-group-item">
+                    <img src="/imagenes/@reseña.FotoPerfil" class="img-fluid" alt="@reseña.Nombre">
+                    <h5>@reseña.Nombre</h5>
+                    <p>@reseña.Texto</p>
+                    <p>Calificación: @reseña.Calificacion/5</p>
+                </div>
+            }
+        </div>
+    }
+    <h2 class="mt-4">¿Qué vas a aprender paso a paso?</h2>
+    @if (ViewBag.Tareas != null && ViewBag.Tareas.Count > 0)
+    {
+        <ul>
+            @foreach (var tarea in ViewBag.Tareas)
+            {
+                <li>@tarea.Nombre</li>
+            }
+        </ul>
+    }
+    <a href="@Url.Action("AsignarCurso", "Home", new { id = ViewBag.IdCurso })" class="btn btn-primary mt-3">Comprar curso por $@ViewBag.PrecioCurso</a>
+</div>
+
