@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Tareas";
+    var curso = ViewBag.Curso as MarkStart.Models.Curso;
+    var tareas = ViewBag.Tareas as List<MarkStart.Models.Tarea> ?? new List<MarkStart.Models.Tarea>();
+}
+
+<div class="container mt-5">
+    @if (curso == null)
+    {
+        <div class="alert alert-warning">No se encontró el curso solicitado.</div>
+    }
+    else
+    {
+        <div class="mb-4">
+            <h1>@curso.Nombre</h1>
+            <p class="text-muted">@curso.Descripcion</p>
+        </div>
+
+        @if (tareas.Count == 0)
+        {
+            <div class="alert alert-info">Este curso todavía no tiene tareas asignadas.</div>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (var tarea in tareas)
+                {
+                    <div class="list-group-item">
+                        <h4>@tarea.Nombre</h4>
+                        <p>@tarea.Explicacion</p>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="mt-4">
+            <a href="@Url.Action("Cursos", "Home", new { IdStartup = 0 })" class="btn btn-secondary">Volver a cursos</a>
+        </div>
+    }
+</div>

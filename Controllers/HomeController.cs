@@ -248,4 +248,20 @@ public class HomeController : Controller
 
         return View();
     }
+    public IActionResult Tareas(int Id)
+    {
+        BD bd = new BD();
+        Curso curso = bd.buscarCursoPorId(Id);
+
+        if (curso == null)
+        {
+            return NotFound();
+        }
+
+        ViewBag.Curso = curso;
+        ViewBag.Tareas = bd.obtenerTareasCurso(Id);
+        ViewBag.IdCurso = curso.IdCurso;
+
+        return View();
+    }
 }
