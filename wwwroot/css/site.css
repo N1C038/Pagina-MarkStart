@@ -785,7 +785,7 @@ body {
     display: flex;
     flex-direction: column;
     background: #9fcfe0;
-    border: 3px solid #1a1a1a;
+    border: 3px solid #000000;
     border-radius: 0;
     padding: 14px 18px 18px;
     min-height: 260px;
@@ -794,6 +794,37 @@ body {
 
 .markstart-review-item__header {
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    min-height: 52px;
+}
+
+.markstart-review-item__avatar {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border: 3px solid #000000;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fff;
+}
+
+.markstart-review-item__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+.markstart-review-item__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-height: 52px;
 }
 
 .markstart-review-item__header h4 {
@@ -802,57 +833,53 @@ body {
     font-size: clamp(1.5rem, 1.8vw, 2.2rem);
     font-weight: 700;
     color: #1a1a1a;
-    text-align: center;
+    text-align: left;
+    line-height: 1.1;
+}
+
+.markstart-review-item__role {
+    margin: 0;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 1.05rem;
+    color: #1a1a1a;
     line-height: 1.2;
+    text-align: left;
 }
 
 .markstart-review-item__body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-    align-items: center;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
     flex: 1;
-}
-
-.markstart-review-item__photo {
     width: 100%;
-    height: 180px;
-    background: #fff;
-    border: 3px solid #fff;
-    overflow: hidden;
-}
-
-.markstart-review-item__photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
 }
 
 .markstart-review-item__quote {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex: 1;
+    margin-top: 0;
+    margin-left: 10px;
+    text-align: left;
 }
 
 .markstart-review-item__quote p {
     margin: 0;
     font-family: "IBM Plex Sans", sans-serif;
+    font-size: clamp(1rem, 0.95vw + 0.5rem, 1.5rem);
+    line-height: 1.5;
     color: #1a1a1a;
     text-align: left;
 }
 
-.markstart-review-item__info {
-    display: none;
-}
-
 @media (max-width: 900px) {
-    .markstart-review-item__body {
-        grid-template-columns: 1fr;
+    .markstart-review-item__header {
+        justify-content: center;
     }
 
-    .markstart-review-item__photo {
-        height: 220px;
+    .markstart-review-item__body {
+        display: block;
     }
 
     .markstart-review-item__quote p {
@@ -1943,7 +1970,7 @@ body {
 
 .markstart-course-detail__review-role {
     margin: 0;
-    font-style: normal;
+    font-style: "IBM Plex Serif", serif;
     font-size: 1rem;
     color: rgba(17,17,17,0.82);
 }
@@ -2095,7 +2122,6 @@ body {
     font-weight: 600;
 }
 
-<<<<<<< HEAD
 .markstart-task-panel__file-input {
     display: none;
 }
@@ -2106,6 +2132,11 @@ body {
     .markstart-task-chat__composer {
         grid-template-columns: 1fr;
     }
-=======
->>>>>>> fcf7a32e1d76f4542ee33257a85c314335c07751
+}
+
+.markstart-review-gallery .markstart-review-item {
+    border: 3px solid #000000 !important;
+    box-sizing: border-box;
+    background: #9fcfe0;
+}
 

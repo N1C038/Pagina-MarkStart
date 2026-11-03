@@ -139,7 +139,8 @@ public class BD
         string query = @"SELECT TOP 3 r.IdReseña,
                                  u.Nombre,
                                  r.Texto AS Texto,
-                                 u.FotoPerfil AS Imagen
+                                 u.FotoPerfil AS FotoPerfil,
+                                 r.Calificacion
                          FROM Reseñas r
                          INNER JOIN Usuarios u ON r.IdUsuario = u.IdUsuario
                          ORDER BY r.Calificacion DESC";
