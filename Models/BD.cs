@@ -117,7 +117,12 @@ public class BD
     public List<Curso> obtenerCursosStartup(int IdStartup)
     {
         List<Curso> cursos = new List<Curso>();
-        string query = @"SELECT c.IdCurso, c.CantTareas, c.Precio, c.Nombre, c.Descripcion, c.FotoCurso
+        string query = @"SELECT c.IdCurso, c.CantTareas, cc.CantCompletadas,
+                             CASE
+                                 WHEN c.CantTareas IS NULL OR c.CantTareas = 0 THEN 0
+                                 ELSE (cc.CantCompletadas * 100.0) / c.CantTareas
+                             END AS PorcentajeCompletado,
+                             c.Precio, c.Nombre, c.Descripcion, c.FotoCurso
                          FROM Cursos c
                          INNER JOIN CursosComprados cc ON c.IdCurso = cc.IdCurso
                          WHERE cc.IdStartup = @IdStartup";
@@ -218,5 +223,39 @@ public class BD
             startup = connection.QueryFirstOrDefault<Startup>(query, new { IdStartup = IdStartup });
         }
         return startup;
+    }
+
+    public double obtenerPorcentajeCompletadoCursosUsuario(int IdUsuario)
+    {
+        string query = @"SELECT CASE
+                            WHEN SUM(c.CantTareas) IS NULL OR SUM(c.CantTareas) = 0 THEN 0
+                            ELSE (SUM(cc.CantCompletadas) * 100.0) / SUM(c.CantTareas)
+                         END AS Porcentaje
+                         FROM UsuariosXStartUp us
+                         INNER JOIN CursosComprados cc ON us.IdStartup = cc.IdStartup
+                         INNER JOIN Cursos c ON cc.IdCurso = c.IdCurso
+                         WHERE us.IdUsuario = @IdUsuario";
+
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            var porcentaje = connection.QuerySingleOrDefault<double?>(query, new { IdUsuario = IdUsuario });
+            return porcentaje ?? 0;
+        }
+    }
+    public double obtenerPorcentajeCompletadoCursosStartup(int IdStartup)
+    {
+        string query = @"SELECT CASE
+                            WHEN SUM(c.CantTareas) IS NULL OR SUM(c.CantTareas) = 0 THEN 0
+                            ELSE (SUM(cc.CantCompletadas) * 100.0) / SUM(c.CantTareas)
+                         END AS Porcentaje
+                         FROM CursosComprados cc
+                         INNER JOIN Cursos c ON cc.IdCurso = c.IdCurso
+                         WHERE cc.IdStartup = @IdStartup";
+
+        using (SqlConnection connection = new SqlConnection(conexion))
+        {
+            var porcentaje = connection.QuerySingleOrDefault<double?>(query, new { IdStartup = IdStartup });
+            return porcentaje ?? 0;
+        }
     }
 }

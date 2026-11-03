@@ -3,6 +3,8 @@ public class Curso
 {
     public int IdCurso { get; set; }
     public int CantTareas { get; set; }
+    public int CantCompletadas { get; set; }
+    public double PorcentajeCompletado { get; set; }
     public double Precio { get; set; }
     public string Nombre { get; set; }
     public string Descripcion { get; set; }

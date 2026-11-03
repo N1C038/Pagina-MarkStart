@@ -33,12 +33,16 @@
         <div class="markstart-course-gallery__items">
             @foreach (var curso in ViewBag.CursosComprados)
             {
+                var porcentaje = curso.CantTareas > 0 ? Math.Round((curso.CantCompletadas * 100.0) / curso.CantTareas, 1) : 0d;
                 <div class="markstart-course-card">
                     <div class="markstart-course-item">
                         <img src="/imagenes/@curso.FotoCurso" alt="@curso.Nombre">
                         <a href="@Url.Action("Tareas", "Home", new { Id = curso.IdCurso })" class="markstart-course-item__info">Entrar</a>
                     </div>
                     <h4>@curso.Nombre</h4>
+                    <div class="mt-2">
+                        <small class="text-muted">Progreso: @porcentaje%</small>
+                    </div>
                 </div>
             }
         </div>

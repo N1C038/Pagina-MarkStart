@@ -170,7 +170,9 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
         BD bd = new BD();
-        List<Startup> startups = bd.obtenerStartupsUsuario(int.Parse(HttpContext.Session.GetString("IdUsuario") ?? "0"));
+        int idUsuario = int.Parse(HttpContext.Session.GetString("IdUsuario") ?? "0");
+
+        List<Startup> startups = bd.obtenerStartupsUsuario(idUsuario);
         if(startups.Count > 0)
         {
             ViewBag.Startups = startups;
@@ -182,6 +184,7 @@ public class HomeController : Controller
             else{
                 ViewBag.NombreStartup = startups[IdStartup - 1].Nombre;
             }
+
             List<Curso> cursosComprados = bd.obtenerCursosStartup(IdStartup);
             List<Curso> cursosRecomendados = bd.obtener3Cursos();
             ViewBag.CursosComprados = cursosComprados;
@@ -340,6 +343,7 @@ public IActionResult AsignarCurso(int IdCurso)
     ViewBag.IdCurso = IdCurso;
 
     return View();
+}
     private string? GetApiKey()
     {
         var keys = new[]
@@ -494,7 +498,8 @@ public IActionResult AsignarCurso(int IdCurso)
             return StatusCode(500, new { error = "La respuesta de la IA no tiene el formato esperado." });
         }
     }
-}
+
+
 
 public IActionResult AsignarCursoPost(int IdCurso, int IdStartup)
 {
